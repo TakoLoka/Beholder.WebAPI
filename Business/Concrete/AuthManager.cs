@@ -26,27 +26,27 @@ namespace Business.Concrete
         {
             if (!UserExists(user.Email).Success)
             {
-                return new ErrorDataResult<AccessToken>(Messages.UserNotFound);
+                return new ErrorDataResult<AccessToken>(Messages.AuthMessages.UserNotFound);
             }
 
-            return new SuccessDataResult<AccessToken>(_tokenHelper.CreateToken(user), Messages.AccessTokenCreated);
+            return new SuccessDataResult<AccessToken>(_tokenHelper.CreateToken(user), Messages.AuthMessages.AccessTokenCreated);
         }
 
         public IDataResult<User> Login(UserForLoginDto userForLogin)
         {
             if (!UserExists(userForLogin.Email).Success)
             {
-                return new ErrorDataResult<User>(Messages.UserNotFound);
+                return new ErrorDataResult<User>(Messages.AuthMessages.UserNotFound);
             }
 
             var userToCheck = _userService.GetByMail(userForLogin.Email);
 
-            if (!HashingHelper.VerifyPasswordHash(userForLogin.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
+            if (!HashingHelper.VerifyPasswordHash(userForLogin.Password, userToCheck.Data.PasswordHash, userToCheck.Data.PasswordSalt))
             {
-                return new ErrorDataResult<User>(Messages.PasswordError);
+                return new ErrorDataResult<User>(Messages.AuthMessages.PasswordError);
             }
 
-            return new SuccessDataResult<User>(userToCheck, Messages.LoginSuccessful);
+            return new SuccessDataResult<User>(userToCheck.Data, Messages.AuthMessages.LoginSuccessful);
         }
 
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto)
@@ -54,7 +54,7 @@ namespace Business.Concrete
 
             if (UserExists(userForRegisterDto.Email).Success)
             {
-                return new ErrorDataResult<User>(Messages.UserAlreadyExists);
+                return new ErrorDataResult<User>(Messages.AuthMessages.UserAlreadyExists);
             }
 
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -72,7 +72,7 @@ namespace Business.Concrete
 
             _userService.Create(user);
 
-            return new SuccessDataResult<User>(user, Messages.RegisterSuccessful);
+            return new SuccessDataResult<User>(user, Messages.AuthMessages.RegisterSuccessful);
         }
 
         public IResult UserExists(string email)
@@ -80,10 +80,10 @@ namespace Business.Concrete
             var userToCheck = _userService.GetByMail(email);
             if (userToCheck == null)
             {
-                return new ErrorResult(Messages.UserNotFound);
+                return new ErrorResult(Messages.AuthMessages.UserNotFound);
             }
 
-            return new SuccessResult(Messages.UserFound);
+            return new SuccessResult(Messages.AuthMessages.UserFound);
         }
     }
 }

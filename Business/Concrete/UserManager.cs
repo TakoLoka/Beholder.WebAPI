@@ -2,6 +2,7 @@
 using Business.Constants;
 using Core.Abstract;
 using Core.Entities;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using System;
 using System.Collections.Generic;
@@ -20,33 +21,54 @@ namespace Business.Concrete
             _operationClaimDal = operationClaimDal;
         }
 
-        public void BecomeDungeonMasterPremium(User user)
+        public IResult BecomeDungeonMasterPremium(User user)
         {
             var premiumUser = _userDal.GetOne(usr => user.Id == user.Id);
+            if (premiumUser.OperationClaims == null)
+            {
+                premiumUser.OperationClaims = new List<OperationClaim>();
+            }
+            else if (premiumUser.OperationClaims.FirstOrDefault(x => x.Name == OperationClaimNames.DungeonMaster) != null)
+            {
+                return new ErrorResult(Messages.UserMessages.UserAlreadyPremiumDM(premiumUser));
+            }
+
             premiumUser.OperationClaims.Add(_operationClaimDal.GetOperationClaimByName(OperationClaimNames.DungeonMaster));
             _userDal.Update(user.Id.ToString(), premiumUser);
+            return new SuccessResult(Messages.UserMessages.UserBecamePremiumDM(premiumUser));
         }
 
-        public void BecomePlayerPremium(User user)
+        public IResult BecomePlayerPremium(User user)
         {
             var premiumUser = _userDal.GetOne(usr => user.Id == user.Id);
+            if (premiumUser.OperationClaims == null)
+            {
+                premiumUser.OperationClaims = new List<OperationClaim>();
+            }
+            else if(premiumUser.OperationClaims.FirstOrDefault(x => x.Name == OperationClaimNames.Player) != null)
+            {
+                return new ErrorResult(Messages.UserMessages.UserAlreadyPremiumPlayer(premiumUser));
+            }
+
             premiumUser.OperationClaims.Add(_operationClaimDal.GetOperationClaimByName(OperationClaimNames.Player));
             _userDal.Update(user.Id.ToString(), premiumUser);
+            return new SuccessResult(Messages.UserMessages.UserBecamePremiumPlayer(premiumUser));
         }
 
-        public void Create(User user)
+        public IResult Create(User user)
         {
             _userDal.Create(user);
+            return new SuccessResult(Messages.UserMessages.UserCreated(user));
         }
 
-        public User GetByMail(string email)
+        public IDataResult<User> GetByMail(string email)
         {
-            return _userDal.GetOne(user => user.Email == email);
+            return new SuccessDataResult<User>(_userDal.GetOne(user => user.Email == email));
         }
 
-        public List<OperationClaim> GetClaims(User user)
+        public IDataResult<List<OperationClaim>> GetClaims(User user)
         {
-            return _userDal.GetOne(usr => usr.Id == user.Id).OperationClaims.ToList();
+            return new SuccessDataResult<List<OperationClaim>>(_userDal.GetOne(usr => usr.Id == user.Id).OperationClaims.ToList());
         }
     }
 }

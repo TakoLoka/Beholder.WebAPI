@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Business.Abstract;
 using Core.Utilities.Results;
@@ -25,17 +27,40 @@ namespace WebAPI.Controllers
         [Authorize]
         public ActionResult BecomePremiumDM()
         {
-            _userService.BecomeDungeonMasterPremium(_userService.GetByMail("tako.n.kta@gmail.com"));
-            return Ok(new SuccessResult("DM Premium"));
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if(identity != null)
+            {
+                IEnumerable<Claim> claims = identity.Claims;
+                string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
+                var result = _userService.BecomeDungeonMasterPremium(_userService.GetByMail(userEmail).Data);
+                if (!result.Success)
+                {
+                    return BadRequest(result.Message);
+                }
+                return Ok(result);
+            }
+
+            return BadRequest();
         }
 
         [HttpPost("Premium/Player")]
         [Authorize]
         public ActionResult BecomePremiumPlayer()
         {
-            _userService.BecomePlayerPremium(_userService.GetByMail("tako.n.kta@gmail.com"));
-            return Ok(new SuccessResult("DM Premium"));
-        }
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                IEnumerable<Claim> claims = identity.Claims;
+                string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
+                var result = _userService.BecomePlayerPremium(_userService.GetByMail(userEmail).Data);
+                if (!result.Success)
+                {
+                    return BadRequest(result.Message);
+                }
+                return Ok(result);
+            }
 
+            return BadRequest();
+        }
     }
 }

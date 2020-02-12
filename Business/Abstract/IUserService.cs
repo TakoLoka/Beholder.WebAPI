@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Utilities.Results;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,10 +8,10 @@ namespace Business.Abstract
 {
     public interface IUserService
     {
-        List<OperationClaim> GetClaims(User user);
-        void Create(User user);
-        User GetByMail(string email);
-        void BecomeDungeonMasterPremium(User user);
-        void BecomePlayerPremium(User user);
+        IDataResult<List<OperationClaim>> GetClaims(User user);
+        IResult Create(User user);
+        IDataResult<User> GetByMail(string email);
+        IResult BecomeDungeonMasterPremium(User user);
+        IResult BecomePlayerPremium(User user);
     }
 }
