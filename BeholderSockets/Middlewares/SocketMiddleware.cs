@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BeholderSockets.Handlers;
+using BeholderSockets.SocketsManager;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +8,7 @@ using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BeholderSockets.SocketsManager
+namespace BeholderSockets.Middlewares
 {
     public class SocketMiddleware
     {

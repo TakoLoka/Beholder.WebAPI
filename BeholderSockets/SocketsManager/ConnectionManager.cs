@@ -31,12 +31,12 @@ namespace BeholderSockets.SocketsManager
         {
             _connections.TryRemove(id, out var socket);
 
-            await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Socket Connection Closed", CancellationToken.None);
+            await socket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "Socket Connection Closed", CancellationToken.None);
         }
 
         public void AddSocket(WebSocket socket)
         {
-            _connections.TryAdd(GetConnectionId(),socket);
+            _connections.TryAdd(GetConnectionId(), socket);
         }
         private string GetConnectionId()
         {

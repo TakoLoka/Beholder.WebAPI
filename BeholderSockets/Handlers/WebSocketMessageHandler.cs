@@ -28,5 +28,13 @@ namespace BeholderSockets.Handlers
             var message = $"{socketId} said: {Encoding.UTF8.GetString(buffer, 0, result.Count)}";
             await SendMessageToAll(message);
         }
+
+        public override async Task OnDisconnected(WebSocket socket)
+        {
+            var socketId = Connections.GetId(socket);
+            var message = $"{socketId} just disconnected...";
+            await SendMessageToAll(message);
+            await base.OnDisconnected(socket);
+        }
     }
 }

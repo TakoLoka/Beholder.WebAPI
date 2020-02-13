@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BeholderSockets.SocketsManager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.WebSockets;
@@ -6,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BeholderSockets.SocketsManager
+namespace BeholderSockets.Handlers
 {
     public abstract class SocketHandler
     {
@@ -29,7 +30,7 @@ namespace BeholderSockets.SocketsManager
 
         public virtual async Task SendMessage(WebSocket socket, string message)
         {
-            if (socket.State == WebSocketState.Open)
+            if (socket.State != WebSocketState.Open)
                 return;
 
             await socket.SendAsync(new ArraySegment<byte>(Encoding.ASCII.GetBytes(message), 0, message.Length),
@@ -40,7 +41,7 @@ namespace BeholderSockets.SocketsManager
         {
             var socket = Connections.GetSocketById(id);
 
-            if (socket.State == WebSocketState.Open)
+            if (socket.State != WebSocketState.Open)
                 return;
 
             await socket.SendAsync(new ArraySegment<byte>(Encoding.ASCII.GetBytes(message), 0, message.Length),

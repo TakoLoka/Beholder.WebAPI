@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BeholderSockets.Extensions;
 using BeholderSockets.Handlers;
 using BeholderSockets.SocketsManager;
 using Microsoft.AspNetCore.Builder;

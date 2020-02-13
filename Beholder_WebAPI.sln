@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Busine
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{860503BE-B22B-4F33-B853-189C393BC91E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeholderSockets", "BeholderSockets\BeholderSockets.csproj", "{5AA3FDBF-180D-450F-A167-B6ECBE076B90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeholderSockets", "BeholderSockets\BeholderSockets.csproj", "{5AA3FDBF-180D-450F-A167-B6ECBE076B90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

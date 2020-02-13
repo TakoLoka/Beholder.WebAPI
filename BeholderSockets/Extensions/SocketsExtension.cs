@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using BeholderSockets.Handlers;
+using BeholderSockets.Middlewares;
+using BeholderSockets.SocketsManager;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -7,7 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace BeholderSockets.SocketsManager
+namespace BeholderSockets.Extensions
 {
     public static class SocketsExtension
     {

@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h1>Web Socket Client</h1>
+    <input type="text" id="messageToSend" placeholder="Message..." />
+    <button id="sendBtn">Send</button>
+    <ul id="messages"></ul>
+</body>
+<script type="text/javascript">
+    var uri = "ws://localhost:5000/ws";
+    socket = new WebSocket(uri);
+    function connect() {
+        socket.onopen = function (e) {
+            console.log("Connection Established");
+        }
+
+        socket.onclose = function (e) {
+            console.log("Connection Closed");
+            socket.send(e);
+        }
+
+        socket.onerror = function(e){
+            console.log(e);
+        }
+
+        socket.onmessage = function (e) {
+            appendItem(list, e.data);
+            console.log(e.data);
+        }
+    }
+
+    connect();
+
+    var list = document.getElementById("messages");
+    var button = document.getElementById("sendBtn");
+    button.addEventListener('click', function () {
+        var sendMessage = function (element) {
+            console.log(element);
+            socket.send(element);
+        }
+
+        console.log("Sending Message");
+        var message = document.getElementById("messageToSend").value;
+        sendMessage(message);
+    });
+
+
+    function appendItem(list, data) {
+        var item = document.createElement("li");
+        item.appendChild(document.createTextNode(data));
+        list.appendChild(item);
+    }
+</script>
+</html>
