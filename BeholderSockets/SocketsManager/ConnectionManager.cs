@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.BeholderLogging;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,14 @@ namespace BeholderSockets.SocketsManager
         {
             _connections.TryRemove(id, out var socket);
 
-            await socket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "Socket Connection Closed", CancellationToken.None);
+            try
+            {
+                await socket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "Socket Connection Closed", CancellationToken.None);
+            }
+            catch (Exception e)
+            {
+                BeholderLogger.Log(e);
+            }
         }
 
         public void AddSocket(WebSocket socket)

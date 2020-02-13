@@ -6,8 +6,10 @@
 </head>
 <body>
     <h1>Web Socket Client</h1>
-    <input type="text" id="messageToSend" placeholder="Message..." />
-    <button id="sendBtn">Send</button>
+    <form>
+        <input type="text" id="messageToSend" placeholder="Message..." />
+        <button type="submit" id="sendBtn">Send</button>
+    </form>
     <ul id="messages"></ul>
 </body>
 <script type="text/javascript">
@@ -37,7 +39,8 @@
 
     var list = document.getElementById("messages");
     var button = document.getElementById("sendBtn");
-    button.addEventListener('click', function () {
+    button.addEventListener('click', function (e) {
+        e.preventDefault();
         var sendMessage = function (element) {
             console.log(element);
             socket.send(element);
@@ -46,6 +49,7 @@
         console.log("Sending Message");
         var message = document.getElementById("messageToSend").value;
         sendMessage(message);
+        message = "";
     });
 
 

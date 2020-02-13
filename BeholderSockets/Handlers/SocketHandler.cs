@@ -25,7 +25,7 @@ namespace BeholderSockets.Handlers
 
         public virtual async Task OnDisconnected(WebSocket socket)
         {
-            await Task.Run(() => Connections.RemoveSocketAsync(Connections.GetId(socket)));
+            await Task.Run(async () => await Connections.RemoveSocketAsync(Connections.GetId(socket)));
         }
 
         public virtual async Task SendMessage(WebSocket socket, string message)
@@ -33,8 +33,7 @@ namespace BeholderSockets.Handlers
             if (socket.State != WebSocketState.Open)
                 return;
 
-            await socket.SendAsync(new ArraySegment<byte>(Encoding.ASCII.GetBytes(message), 0, message.Length),
-                WebSocketMessageType.Text, true, CancellationToken.None);
+            await SendAsyncFromSocket(socket, message);
         }
 
         public virtual async Task SendMessage(string id, string message)
@@ -44,8 +43,7 @@ namespace BeholderSockets.Handlers
             if (socket.State != WebSocketState.Open)
                 return;
 
-            await socket.SendAsync(new ArraySegment<byte>(Encoding.ASCII.GetBytes(message), 0, message.Length),
-                WebSocketMessageType.Text, true, CancellationToken.None);
+            await SendAsyncFromSocket(socket, message);
         }
 
         public virtual async Task SendMessageToAll(string message)
@@ -54,6 +52,12 @@ namespace BeholderSockets.Handlers
             {
                 await SendMessage(connection.Value, message);
             }
+        }
+
+        private async Task SendAsyncFromSocket(WebSocket socket, string message)
+        {
+            await socket.SendAsync(new ArraySegment<byte>(Encoding.ASCII.GetBytes(message), 0, message.Length),
+                WebSocketMessageType.Text, true, CancellationToken.None);
         }
 
         public abstract Task Receive(WebSocket socket, WebSocketReceiveResult result, byte[] buffer);
