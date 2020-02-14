@@ -9,7 +9,7 @@ using System.Text;
 
 namespace DataAccess.Concrete
 {
-    public class BaseMongoRepository<TEntity> : IBaseRespository<TEntity> where TEntity: AbstractMongoEntity, new()
+    public class BaseMongoRepository<TEntity> : IBaseRespository<TEntity> where TEntity : AbstractMongoEntity, new()
     {
         private readonly IMongoCollection<TEntity> mongoCollection;
 
@@ -23,7 +23,10 @@ namespace DataAccess.Concrete
 
         public virtual List<TEntity> GetList(Expression<Func<TEntity, bool>> expr = null)
         {
-            return mongoCollection.Find(expr).ToList();
+            if (expr != null)
+                return mongoCollection.Find(expr).ToList();
+
+            return mongoCollection.Find(entity => true).ToList();
         }
 
         public virtual TEntity GetOne(Expression<Func<TEntity, bool>> expr)
