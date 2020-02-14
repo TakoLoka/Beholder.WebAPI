@@ -33,7 +33,7 @@ namespace Business.Concrete
 
         public IResult CreateRoom()
         {
-            var assignedName = new Guid();
+            var assignedName = Guid.NewGuid();
             _roomDal.Create(new Room
             {
                 RoomName = assignedName,

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Attributes
 {
-    public class PlayerAttribute: AuthorizeAttribute
+    public class PlayerAuthorize: AuthorizeAttribute
     {
-        public PlayerAttribute(): base()
+        public PlayerAuthorize(): base()
         {
             Roles = Core.Constants.OperationClaimNames.Player;
         }

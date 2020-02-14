@@ -15,6 +15,7 @@ namespace DataAccess.Concrete
 
         public BaseMongoRepository(string mongoDBConnectionString, string dbName, string collectionName)
         {
+            BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
             var client = new MongoClient(mongoDBConnectionString);
             var database = client.GetDatabase(dbName);
             mongoCollection = database.GetCollection<TEntity>(collectionName);

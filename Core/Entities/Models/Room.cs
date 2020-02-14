@@ -8,7 +8,7 @@ namespace Core.Entities.Models
 {
     public class Room: AbstractMongoEntity
     {
-        [BsonElement("RoomId")]
+        [BsonElement("RoomName")]
         public Guid RoomName { get; set; }
         [BsonElement("Users")]
         public List<User> Users { get; set; }
