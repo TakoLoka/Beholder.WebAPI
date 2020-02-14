@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Attributes
 {
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class PlayerAuthorize: AuthorizeAttribute
     {
         public PlayerAuthorize(): base()

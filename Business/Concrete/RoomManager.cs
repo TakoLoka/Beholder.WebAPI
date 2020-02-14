@@ -34,12 +34,15 @@ namespace Business.Concrete
         public IResult CreateRoom(string creatorEmail)
         {
             var assignedName = Guid.NewGuid();
+            var creator = _userService.GetByMail(creatorEmail).Data;
             _roomDal.Create(new Room
             {
                 RoomName = assignedName,
-                Creator = _userService.GetByMail(creatorEmail).Data,
+                Creator = creator,
                 Users = new List<User>()
             });
+
+            AddUserToRoom(creator.Email, assignedName.ToString());
 
             return new SuccessResult(Messages.RoomMessages.RoomCreated);
         }
