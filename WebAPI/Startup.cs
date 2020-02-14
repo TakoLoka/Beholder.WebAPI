@@ -82,7 +82,7 @@ namespace WebAPI
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<ChatHub>("/Socket");
+                endpoints.MapHub<ChatHub>("/getSocketScript");
                 endpoints.MapControllers();
             });
         }
