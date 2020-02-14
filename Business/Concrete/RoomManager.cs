@@ -74,6 +74,11 @@ namespace Business.Concrete
             var assignedName = new Guid(roomName);
             var userToRemove = _userService.GetByMail(email).Data;
             var removeRoom = _roomDal.GetOne(room => room.RoomName == assignedName);
+
+            if (userToRemove.Email == removeRoom.Creator.Email) {
+                return DeleteRoom(userToRemove.Email, removeRoom.RoomName.ToString());
+            }
+
             removeRoom.Users.Remove(userToRemove);
             _roomDal.Update(removeRoom.Id.ToString(), removeRoom);
 
