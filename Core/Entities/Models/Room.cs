@@ -10,6 +10,8 @@ namespace Core.Entities.Models
     {
         [BsonElement("RoomName")]
         public Guid RoomName { get; set; }
+        [BsonRequired]
+        public User Creator { get; set; }
         [BsonElement("Users")]
         public List<User> Users { get; set; }
     }

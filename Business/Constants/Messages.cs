@@ -11,6 +11,7 @@ namespace Business.Constants
         {
             public static string UserAddedToRoom(User user, Room room) => user.Email + ": Added to Room: " + room.RoomName;
             public static string RoomCreated = "Room Created";
+            public static string UserIsNotTheCreator = "The user is not the creator of this room.";
             public static string RoomDeleted(Room room) => "Room " + room.RoomName + ": Deleted";
             public static string UserRemovedFromRoom(User user, Room room) => user.Email + ": Removed from Room: " + room.RoomName;
         }

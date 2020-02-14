@@ -31,25 +31,31 @@ namespace Business.Concrete
             return new SuccessResult(Messages.RoomMessages.UserAddedToRoom(userToAdd, roomToAdd));
         }
 
-        public IResult CreateRoom()
+        public IResult CreateRoom(string creatorEmail)
         {
             var assignedName = Guid.NewGuid();
             _roomDal.Create(new Room
             {
                 RoomName = assignedName,
+                Creator = _userService.GetByMail(creatorEmail).Data,
                 Users = new List<User>()
             });
 
             return new SuccessResult(Messages.RoomMessages.RoomCreated);
         }
 
-        public IResult DeleteRoom(string roomName)
+        public IResult DeleteRoom(string creatorEmail, string roomName)
         {
             var assignedName = new Guid(roomName);
             var roomToDelete = _roomDal.GetOne(room => room.RoomName == assignedName);
-            _roomDal.Delete(roomToDelete);
+            if(creatorEmail == roomToDelete.Creator.Email)
+            {
+                _roomDal.Delete(roomToDelete);
 
-            return new SuccessResult(Messages.RoomMessages.RoomDeleted(roomToDelete));
+                return new SuccessResult(Messages.RoomMessages.RoomDeleted(roomToDelete));
+            }
+
+            return new ErrorResult(Messages.RoomMessages.UserIsNotTheCreator);
         }
 
         public IDataResult<Room> GetRoomByName(string roomName)
