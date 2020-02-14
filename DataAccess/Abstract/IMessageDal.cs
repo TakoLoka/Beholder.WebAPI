@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DataAccess.Abstract
 {
-    public interface IUserDal: IBaseRespository<User>
+    public interface IMessageDal: IBaseRespository<Message>
     {
     }
 }

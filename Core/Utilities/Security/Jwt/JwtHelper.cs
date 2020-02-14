@@ -1,4 +1,4 @@
-﻿using Core.Entities;
+﻿using Core.Entities.Models;
 using Core.Extensions;
 using Core.Utilities.Security.Encryption;
 using Microsoft.AspNetCore.Identity;

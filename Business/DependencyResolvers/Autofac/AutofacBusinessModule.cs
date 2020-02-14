@@ -17,11 +17,13 @@ namespace Business.DependencyResolvers.Autofac
         {
             builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<AuthManager>().As<IAuthService>();
+            builder.RegisterType<RoomManager>().As<IRoomService>();
 
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 
             builder.RegisterType<UserMongoRepository>().As<IUserDal>();
             builder.RegisterType<OperationClaimMongoRepository>().As<IOperationClaimDal>();
+            builder.RegisterType<RoomMongoRepository>().As<IRoomDal>();
         }
     }
 }

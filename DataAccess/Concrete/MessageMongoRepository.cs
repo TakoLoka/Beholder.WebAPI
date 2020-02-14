@@ -3,14 +3,13 @@ using DataAccess.Abstract;
 using DataAccess.Database.Constants;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace DataAccess.Concrete
 {
-    public class UserMongoRepository: BaseMongoRepository<User>, IUserDal
+    public class MessageMongoRepository: BaseMongoRepository<Message>, IMessageDal
     {
-        public UserMongoRepository(): base(DB.ConnectionString, DB.DbName, DB.Collections.UserCollection)
+        public MessageMongoRepository(): base(DB.ConnectionString, DB.DbName, DB.Collections.MessageCollection)
         {
         }
     }

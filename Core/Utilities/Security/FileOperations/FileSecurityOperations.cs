@@ -10,6 +10,11 @@ namespace Core.Utilities.Security.FileOperations
     {
         private static string KeyFilePath = Path.GetFullPath("../../../../../key.txt");
         private static string EncryptedFilePath = Path.GetFullPath("../../../../../connection.txt");
+
+        public static string GetConnectionString()
+        {
+            return null;
+        }
         public static void DecryptDBConnectionFile()
         {
             string tempFileName = Path.GetTempFileName();

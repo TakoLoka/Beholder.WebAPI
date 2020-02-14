@@ -49,7 +49,10 @@ namespace DataAccess.Concrete
 
         public virtual void Delete(TEntity entity)
         {
-            mongoCollection.DeleteOne(x => x.Id == entity.Id);
+            if (entity != null)
+            {
+                mongoCollection.DeleteOne(x => x.Id == entity.Id);
+            }
         }
 
         public virtual void Delete(string id)

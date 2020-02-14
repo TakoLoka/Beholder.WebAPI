@@ -2,6 +2,7 @@
 using Business.Constants;
 using Core.Abstract;
 using Core.Entities;
+using Core.Entities.Models;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using System;

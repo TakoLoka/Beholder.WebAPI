@@ -1,4 +1,4 @@
-﻿using Core.Entities;
+﻿using Core.Entities.Models;
 using DataAccess.Abstract;
 using DataAccess.Database.Constants;
 using MongoDB.Bson;

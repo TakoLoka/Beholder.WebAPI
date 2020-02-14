@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Entities
+namespace Core.Entities.Models
 {
     public class User : AbstractMongoEntity
     {

@@ -1,4 +1,4 @@
-﻿using Core.Entities;
+﻿using Core.Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,6 +7,14 @@ namespace Business.Constants
 {
     public class Messages
     {
+        public class RoomMessages
+        {
+            public static string UserAddedToRoom(User user, Room room) => user.Email + ": Added to Room: " + room.RoomName;
+            public static string RoomCreated = "Room Created";
+            public static string RoomDeleted(Room room) => "Room " + room.RoomName + ": Deleted";
+            public static string UserRemovedFromRoom(User user, Room room) => user.Email + ": Removed from Room: " + room.RoomName;
+        }
+
         public class UserMessages
         {
 

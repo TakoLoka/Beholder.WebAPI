@@ -13,6 +13,8 @@ namespace DataAccess.Database.Constants
         {
             public static string UserCollection = "users";
             public static string OperationClaimCollection = "operationClaims";
+            public static string RoomCollection = "rooms";
+            public static string MessageCollection = "messages";
         }
     }
 }
