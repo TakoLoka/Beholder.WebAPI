@@ -17,10 +17,12 @@ namespace WebAPI.Controllers
     public class UserController : ControllerBase
     {
         IUserService _userService;
+        IAuthService _authService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IAuthService authService)
         {
             _userService = userService;
+            _authService = authService;
         }
 
         [HttpPost("Premium/DM")]
@@ -32,12 +34,20 @@ namespace WebAPI.Controllers
             {
                 IEnumerable<Claim> claims = identity.Claims;
                 string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
-                var result = _userService.BecomeDungeonMasterPremium(_userService.GetByMail(userEmail).Data);
+                var user = _userService.GetByMail(userEmail).Data;
+                var result = _userService.BecomeDungeonMasterPremium(user);
                 if (!result.Success)
                 {
                     return BadRequest(result.Message);
                 }
-                return Ok(result);
+
+                var createdToken = _authService.CreateAccessToken(user);
+                if (!createdToken.Success)
+                {
+                    return BadRequest(createdToken.Message);
+                }
+
+                return Ok(createdToken);
             }
 
             return BadRequest();
@@ -57,7 +67,14 @@ namespace WebAPI.Controllers
                 {
                     return BadRequest(result.Message);
                 }
-                return Ok(result);
+
+                var createdToken = _authService.CreateAccessToken(user);
+                if (!createdToken.Success)
+                {
+                    return BadRequest(createdToken.Message);
+                }
+
+                return Ok(createdToken);
             }
 
             return BadRequest();
