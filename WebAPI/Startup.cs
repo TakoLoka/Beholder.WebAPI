@@ -42,8 +42,8 @@ namespace WebAPI
                         var accessToken = context.Request.Query["access_token"];
 
                         // If the request is for our hub...
-                        // var path = context.HttpContext.Request.Path;
-                        if (!string.IsNullOrEmpty(accessToken))
+                         var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/battlemap"))
                         {
                             // Read the token out of the query string
                             context.Token = accessToken;
@@ -102,9 +102,7 @@ namespace WebAPI
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<ChatHub>("/battlemap", options => {
-                    
-                });
+                endpoints.MapHub<ChatHub>("battlemap");
                 endpoints.MapControllers();
             });
         }

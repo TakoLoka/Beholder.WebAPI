@@ -26,7 +26,7 @@ namespace Business.Concrete
         {
             if (!UserExists(user.Email).Success)
             {
-                return new ErrorDataResult<AccessToken>(Messages.AuthMessages.UserNotFound);
+                return new ErrorDataResult<AccessToken>(Messages.UserNotFound);
             }
 
             return new SuccessDataResult<AccessToken>(_tokenHelper.CreateToken(user), Messages.AuthMessages.AccessTokenCreated);
@@ -36,7 +36,7 @@ namespace Business.Concrete
         {
             if (!UserExists(userForLogin.Email).Success)
             {
-                return new ErrorDataResult<User>(Messages.AuthMessages.UserNotFound);
+                return new ErrorDataResult<User>(Messages.UserNotFound);
             }
 
             var userToCheck = _userService.GetByMail(userForLogin.Email);
@@ -78,12 +78,12 @@ namespace Business.Concrete
         public IResult UserExists(string email)
         {
             var userToCheck = _userService.GetByMail(email);
-            if (userToCheck == null)
+            if (userToCheck.Data == null)
             {
-                return new ErrorResult(Messages.AuthMessages.UserNotFound);
+                return new ErrorResult(Messages.UserNotFound);
             }
 
-            return new SuccessResult(Messages.AuthMessages.UserFound);
+            return new SuccessResult(Messages.UserFound);
         }
     }
 }

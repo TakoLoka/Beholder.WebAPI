@@ -22,13 +22,30 @@ namespace Business.Concrete
 
         public IResult AddUserToRoom(string email, string roomName)
         {
-            var parsedRoomName = new Guid(roomName);
-            var userToAdd = _userService.GetByMail(email).Data;
-            var roomToAdd = _roomDal.GetOne(room => room.RoomName == parsedRoomName);
-            roomToAdd.Users.Add(userToAdd);
-            _roomDal.Update(roomToAdd.Id.ToString(), roomToAdd);
+            if(Guid.TryParse(roomName, out var parsedRoomName))
+            {
+                var userToAdd = _userService.GetByMail(email).Data;
+                if(userToAdd == null)
+                {
+                    return new ErrorResult(Messages.UserNotFound);
+                }
+                var roomToAdd = _roomDal.GetOne(room => room.RoomName == parsedRoomName);
+                if (roomToAdd == null)
+                {
+                    return new ErrorResult(Messages.RoomMessages.RoomDoesNotExist);
+                }
 
-            return new SuccessResult(Messages.RoomMessages.UserAddedToRoom(userToAdd, roomToAdd));
+                if (roomToAdd.Users.Contains(userToAdd))
+                {
+                    return new ErrorResult(Messages.RoomMessages.UserAlreadyExists);
+                }
+                roomToAdd.Users.Add(userToAdd);
+                _roomDal.Update(roomToAdd.Id.ToString(), roomToAdd);
+
+                return new SuccessResult(Messages.RoomMessages.UserAddedToRoom(userToAdd, roomToAdd));
+            }
+
+            return new ErrorResult(Messages.GuidError);
         }
 
         public IResult CreateRoom(string creatorEmail)
@@ -49,16 +66,20 @@ namespace Business.Concrete
 
         public IResult DeleteRoom(string creatorEmail, string roomName)
         {
-            var assignedName = new Guid(roomName);
-            var roomToDelete = _roomDal.GetOne(room => room.RoomName == assignedName);
-            if(creatorEmail == roomToDelete.Creator.Email)
+            if (Guid.TryParse(roomName, out var assignedName))
             {
-                _roomDal.Delete(roomToDelete);
+                var roomToDelete = _roomDal.GetOne(room => room.RoomName == assignedName);
+                if (creatorEmail == roomToDelete.Creator.Email)
+                {
+                    _roomDal.Delete(roomToDelete);
 
-                return new SuccessResult(Messages.RoomMessages.RoomDeleted(roomToDelete));
+                    return new SuccessResult(Messages.RoomMessages.RoomDeleted(roomToDelete));
+                }
+
+                return new ErrorResult(Messages.RoomMessages.UserIsNotTheCreator);
             }
 
-            return new ErrorResult(Messages.RoomMessages.UserIsNotTheCreator);
+            return new ErrorResult(Messages.GuidError);
         }
 
         public IDataResult<Room> GetRoomByName(string roomName)
@@ -74,18 +95,39 @@ namespace Business.Concrete
 
         public IResult RemoveUserFromRoom(string email, string roomName)
         {
-            var assignedName = new Guid(roomName);
-            var userToRemove = _userService.GetByMail(email).Data;
-            var removeRoom = _roomDal.GetOne(room => room.RoomName == assignedName);
+            if (Guid.TryParse(roomName, out var assignedName))
+            {
+                var userToRemove = _userService.GetByMail(email).Data;
 
-            if (userToRemove.Email == removeRoom.Creator.Email) {
-                return DeleteRoom(userToRemove.Email, removeRoom.RoomName.ToString());
+                if(userToRemove == null)
+                {
+                    return new ErrorResult(Messages.UserNotFound);
+                }
+
+                var removeRoom = _roomDal.GetOne(room => room.RoomName == assignedName);
+
+                if (removeRoom == null)
+                {
+                    return new ErrorResult(Messages.RoomMessages.RoomDoesNotExist);
+                }
+
+                if (!removeRoom.Users.Contains(userToRemove))
+                {
+                    return new ErrorResult(Messages.RoomMessages.UserIsNotInThisRoom);
+                }
+
+                if (userToRemove.Email == removeRoom.Creator.Email)
+                {
+                    return DeleteRoom(userToRemove.Email, removeRoom.RoomName.ToString());
+                }
+
+                removeRoom.Users.Remove(userToRemove);
+                _roomDal.Update(removeRoom.Id.ToString(), removeRoom);
+
+                return new SuccessResult(Messages.RoomMessages.UserRemovedFromRoom(userToRemove, removeRoom));
             }
 
-            removeRoom.Users.Remove(userToRemove);
-            _roomDal.Update(removeRoom.Id.ToString(), removeRoom);
-
-            return new SuccessResult(Messages.RoomMessages.UserRemovedFromRoom(userToRemove, removeRoom));
+            return new ErrorResult(Messages.GuidError);
         }
     }
 }

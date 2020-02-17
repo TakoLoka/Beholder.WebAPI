@@ -2,16 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Business.Abstract;
-using Business.Constants;
 using Core.Dtos;
-using Core.Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Attributes;
-using WebAPI.Hubs;
 
 namespace WebAPI.Controllers
 {
@@ -70,48 +66,6 @@ namespace WebAPI.Controllers
                     return BadRequest(result.Message);
                 }
                 return Ok(result.Message);
-            }
-
-            return BadRequest();
-        }
-
-        [Route("rooms/join")]
-        [Authorize]
-        [HttpPatch]
-        public IActionResult JoinRoom(UserJoinRoomDto userJoinRoomDto)
-        {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                IEnumerable<Claim> claims = identity.Claims;
-                string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
-                var result = _roomService.AddUserToRoom(userEmail, userJoinRoomDto.RoomName);
-                if (!result.Success)
-                {
-                    return BadRequest(result.Message);
-                }
-                return Ok(result);
-            }
-
-            return BadRequest();
-        }
-
-        [Route("rooms/remove")]
-        [Authorize]
-        [HttpPatch]
-        public IActionResult RemoveUserFromRoom(RemoveUserFromRoomDto removeUserFromRoomDto)
-        {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                IEnumerable<Claim> claims = identity.Claims;
-                string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
-                var result = _roomService.RemoveUserFromRoom(userEmail, removeUserFromRoomDto.RoomName);
-                if (!result.Success)
-                {
-                    return BadRequest(result.Message);
-                }
-                return Ok(result);
             }
 
             return BadRequest();

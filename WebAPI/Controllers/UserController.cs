@@ -62,7 +62,8 @@ namespace WebAPI.Controllers
             {
                 IEnumerable<Claim> claims = identity.Claims;
                 string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
-                var result = _userService.BecomePlayerPremium(_userService.GetByMail(userEmail).Data);
+                var user = _userService.GetByMail(userEmail).Data;
+                var result = _userService.BecomeDungeonMasterPremium(user);
                 if (!result.Success)
                 {
                     return BadRequest(result.Message);
