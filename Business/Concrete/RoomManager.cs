@@ -129,5 +129,20 @@ namespace Business.Concrete
 
             return new ErrorResult(Messages.GuidError);
         }
+
+        public IResult RemoveUserFromAllRooms(string userEmail)
+        {
+            var userToRemove = _userService.GetByMail(userEmail).Data;
+            List<Room> rooms = _roomDal.GetList(x => x.Users.Contains(userToRemove));
+            if(rooms != null && rooms.Count >= 0)
+            {
+                foreach (var room in rooms)
+                {
+                    RemoveUserFromRoom(userEmail, room.RoomName.ToString());
+                }
+            }
+
+            return new SuccessResult(Messages.RoomMessages.UserRemovedFromAllRooms);
+        }
     }
 }

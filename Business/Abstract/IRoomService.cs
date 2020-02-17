@@ -14,5 +14,6 @@ namespace Business.Abstract
         IResult DeleteRoom(string creatorEmail, string roomName);
         IResult AddUserToRoom(string email, string roomName);
         IResult RemoveUserFromRoom(string email, string roomName);
+        IResult RemoveUserFromAllRooms(string value);
     }
 }

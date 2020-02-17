@@ -23,6 +23,8 @@ namespace Business.Constants
             public static string UserIsNotInThisRoom = "User is NOT a part of this room";
             public static string UserAlreadyExists = "User is already a part of this room";
 
+            public static string UserRemovedFromAllRooms = "User Removed from ALL Rooms";
+
             public static string RoomDeleted(Room room) => "Room " + room.RoomName + ": Deleted";
             public static string UserRemovedFromRoom(User user, Room room) => user.Email + ": Removed from Room: " + room.RoomName;
         }

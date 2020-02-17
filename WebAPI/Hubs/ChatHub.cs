@@ -81,6 +81,8 @@ namespace WebAPI.Hubs
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             await Clients.Caller.SendAsync("USER_DISCONNECTED", CancellationToken.None);
+            var identity = Context.User.Identity as ClaimsIdentity;
+            _roomService.RemoveUserFromAllRooms(identity.Claims.First(x => x.Type == ClaimTypes.Email).Value);
             await base.OnConnectedAsync();
         }
         #endregion
