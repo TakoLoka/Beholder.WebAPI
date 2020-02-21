@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WebAPI.Models.Documentation;
-using WebAPI.Utilities;
 using Microsoft.AspNetCore.Hosting;
 
 namespace WebAPI.Controllers

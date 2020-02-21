@@ -28,13 +28,13 @@
         </dd>
     </dl>
     <div class="instructions">
-        @Html.PartialAsync("InstructionList", Model.Instructions)
+        @await Html.PartialAsync("InstructionList", Model.Instructions)
     </div>
     <div class="invocations">
-        @Html.PartialAsync("InvocationList", Model.Invocations)
+        @await Html.PartialAsync("InvocationList", Model.Invocations)
     </div>
     <div class="invocations">
-        @Html.PartialAsync("ReceiveMethodList", Model.ReceiveMethods)
+        @await Html.PartialAsync("ReceiveMethodList", Model.ReceiveMethods)
     </div>
 
     <ul class="notes">

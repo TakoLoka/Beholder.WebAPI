@@ -36,10 +36,10 @@
                 @Html.DisplayFor(modelItem => item.Authorization)
             </td>
             <td>
-                @Html.PartialAsync("Response", item.OnSuccess)
+                @await Html.PartialAsync("Response", item.OnSuccess)
             </td>
             <td>
-                @Html.PartialAsync("Response", item.OnError)
+                @await Html.PartialAsync("Response", item.OnError)
             </td>
         </tr>
 }

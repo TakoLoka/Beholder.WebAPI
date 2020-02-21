@@ -1,116 +1,114 @@
 {
-  "battlemap": {
-    "title": "Battlemap Socket Relation Documentation",
-    "version": "V1",
-    "battlemapRoute": "www.takoloka.com/battlemap",
-    "instructions": [
-      {
-        "title": "Implementation",
-        "text": "You need to install a SignalR Client package according to your platform. Follow the steps to establish a connection using the battlemapRoute given in this documentation."
+  "title": "Battlemap Socket Relation Documentation",
+  "version": "V1",
+  "battlemapRoute": "www.takoloka.com/battlemap",
+  "instructions": [
+    {
+      "title": "Implementation",
+      "text": "You need to install a SignalR Client package according to your platform. Follow the steps to establish a connection using the battlemapRoute given in this documentation."
+    },
+    {
+      "title": "Invoke Methods",
+      "text": "Methods which are invoked by the client (sent to server) using: connection.invoke(<methodName>,...<parameters>)"
+    },
+    {
+      "title": "Receive Methods",
+      "text": "Methods which can be genrated on a client device listened (sent by server) using: connection.on(<payload>, data)"
+    }
+  ],
+  "notes": [
+    "Connection should receive an access token at the beginning. It cannot be changed later",
+    "If the Creator of the room is disconnected the room is closed",
+    "Make sure you are sending right parameters",
+    "*For now* all parameters are received and invoked in string format"
+  ],
+  "invocations": [
+    {
+      "methodName": "CreateRoom",
+      "description": "Creates A Room",
+      "authorization": "DMAuthorization",
+      "parameters": [],
+      "onSuccess": {
+        "target": "Caller",
+        "payload": "CREATE_ROOM"
       },
-      {
-        "title": "Invoke Methods",
-        "text": "Methods which are invoked by the client (sent to server) using: connection.invoke(<methodName>,...<parameters>)"
-      },
-      {
-        "title": "Receive Methods",
-        "text": "Methods which can be genrated on a client device listened (sent by server) using: connection.on(<payload>, data)"
+      "onError": {
+        "target": "Caller",
+        "payload": "CREATE_ROOM_ERROR"
       }
-    ],
-    "notes": [
-      "Connection should receive an access token at the beginning. It cannot be changed later",
-      "If the Creator of the room is disconnected the room is closed",
-      "Make sure you are sending right parameters",
-      "*For now* all parameters are received and invoked in string format"
-    ],
-    "invocations": [
-      {
-        "methodName": "CreateRoom",
-        "description": "Creates A Room",
-        "authorization": "DMAuthorization",
-        "parameters": [],
-        "onSuccess": {
-          "target": "Caller",
-          "payload": "CREATE_ROOM"
-        },
-        "onError": {
-          "target": "Caller",
-          "payload": "CREATE_ROOM_ERROR"
-        }
+    },
+    {
+      "methodName": "SendMessage",
+      "description": "Sends A Message to Given Room",
+      "authorization": "Authorization",
+      "parameters": [ "roomName", "message" ],
+      "onSuccess": {
+        "target": "Room",
+        "payload": "MESSAGE"
       },
-      {
-        "methodName": "SendMessage",
-        "description": "Sends A Message to Given Room",
-        "authorization": "Authorization",
-        "parameters": [ "roomName", "message" ],
-        "onSuccess": {
-          "target": "Room",
-          "payload": "MESSAGE"
-        },
-        "onError": {}
+      "onError": {}
+    },
+    {
+      "methodName": "JoinRoom",
+      "description": "Join to Given Room",
+      "authorization": "Authorization",
+      "parameters": [ "roomName" ],
+      "onSuccess": {
+        "target": "Room",
+        "payload": "USER_CONNECTED_ROOM"
       },
-      {
-        "methodName": "JoinRoom",
-        "description": "Join to Given Room",
-        "authorization": "Authorization",
-        "parameters": [ "roomName" ],
-        "onSuccess": {
-          "target": "Room",
-          "payload": "USER_CONNECTED_ROOM"
-        },
-        "onError": {
-          "target": "Caller",
-          "payload": "USER_CONNECTED_ROOM_ERROR"
-        }
-      },
-      {
-        "methodName": "LeaveRoom",
-        "description": "Leave Given Room",
-        "authorization": "Authorization",
-        "parameters": [ "roomName" ],
-        "onSuccess": {
-          "target": "Room",
-          "payload": "USER_DICONNECTED_ROOM"
-        },
-        "onError": {
-          "target": "Caller",
-          "payload": "USER_DICONNECTED_ROOM_ERROR"
-        }
+      "onError": {
+        "target": "Caller",
+        "payload": "USER_CONNECTED_ROOM_ERROR"
       }
-    ],
-    "receiveMethods": [
-      {
-        "methodName": "BAD_REQUEST",
-        "data": ""
+    },
+    {
+      "methodName": "LeaveRoom",
+      "description": "Leave Given Room",
+      "authorization": "Authorization",
+      "parameters": [ "roomName" ],
+      "onSuccess": {
+        "target": "Room",
+        "payload": "USER_DICONNECTED_ROOM"
       },
-      {
-        "methodName": "CREATE_ROOM",
-        "data": "Room Name"
-      },
-      {
-        "methodName": "CREATE_ROOM_ERROR",
-        "data": "Error Message"
-      },
-      {
-        "methodName": "MESSAGE",
-        "data": "Message"
-      },
-      {
-        "methodName": "USER_CONNECTED_ROOM",
-        "data": "Join Room Message"
-      },
-      {
-        "methodName": "USER_CONNECTED_ROOM_ERROR",
-        "data": "Error Message"
-      },
-      {
-        "methodName": "USER_DISCONNECTED_ROOM",
-        "data": "Disconnect Room Message"
-      },
-      {
-        "methodName": "USER_DISCONNECTED_ROOM_ERROR",
-        "data": "Error Message"
+      "onError": {
+        "target": "Caller",
+        "payload": "USER_DICONNECTED_ROOM_ERROR"
       }
-    ]
-  }
+    }
+  ],
+  "receiveMethods": [
+    {
+      "methodName": "BAD_REQUEST",
+      "data": ""
+    },
+    {
+      "methodName": "CREATE_ROOM",
+      "data": "Room Name"
+    },
+    {
+      "methodName": "CREATE_ROOM_ERROR",
+      "data": "Error Message"
+    },
+    {
+      "methodName": "MESSAGE",
+      "data": "Message"
+    },
+    {
+      "methodName": "USER_CONNECTED_ROOM",
+      "data": "Join Room Message"
+    },
+    {
+      "methodName": "USER_CONNECTED_ROOM_ERROR",
+      "data": "Error Message"
+    },
+    {
+      "methodName": "USER_DISCONNECTED_ROOM",
+      "data": "Disconnect Room Message"
+    },
+    {
+      "methodName": "USER_DISCONNECTED_ROOM_ERROR",
+      "data": "Error Message"
+    }
+  ]
 }
