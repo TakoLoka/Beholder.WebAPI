@@ -9,6 +9,7 @@ namespace Business.Abstract
     public interface IRoomService
     {
         IDataResult<List<Room>> GetRooms();
+        IDataResult<List<Room>> GetRoomsWithUser(string userEmail);
         IDataResult<Room> GetRoomByName(string roomName);
         IResult CreateRoom(string creatorEmail);
         IResult DeleteRoom(string creatorEmail, string roomName);

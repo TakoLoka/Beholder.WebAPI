@@ -7,6 +7,7 @@ using Core.Utilities.Security.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -31,7 +32,9 @@ namespace WebAPI
         {
             services.AddControllers().AddNewtonsoftJson();
 
-            //services.AddCors(options => options.AddPolicy("AllowOrigin", builder => builder.WithOrigins("http://localhost:3000")));
+            services.AddCors(options => options.AddPolicy("AllowOrigin", builder => builder.WithOrigins()));
+
+            //services.AddMvc();
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -96,14 +99,17 @@ namespace WebAPI
 
             app.UseRouting();
 
+            app.UseStaticFiles();
+
             app.UseAuthentication();
 
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<ChatHub>("battlemap");
+                endpoints.MapHub<BattlemapHub>("battlemap");
                 endpoints.MapControllers();
+                //endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}");
             });
         }
     }

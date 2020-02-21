@@ -35,7 +35,7 @@ namespace Business.Concrete
                     return new ErrorResult(Messages.RoomMessages.RoomDoesNotExist);
                 }
 
-                if (roomToAdd.Users.Contains(userToAdd))
+                if (roomToAdd.Users.Find(user => user.Email == userToAdd.Email) != null)
                 {
                     return new ErrorResult(Messages.RoomMessages.UserAlreadyExists);
                 }
@@ -52,16 +52,16 @@ namespace Business.Concrete
         {
             var assignedName = Guid.NewGuid();
             var creator = _userService.GetByMail(creatorEmail).Data;
+            List<User> users = new List<User>();
+            users.Add(creator);
             _roomDal.Create(new Room
             {
                 RoomName = assignedName,
                 Creator = creator,
-                Users = new List<User>()
+                Users = users
             });
 
-            AddUserToRoom(creator.Email, assignedName.ToString());
-
-            return new SuccessResult(Messages.RoomMessages.RoomCreated);
+            return new SuccessResult(assignedName.ToString());
         }
 
         public IResult DeleteRoom(string creatorEmail, string roomName)
@@ -93,16 +93,16 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Room>>(_roomDal.GetList());
         }
 
+        public IDataResult<List<Room>> GetRoomsWithUser(string userEmail)
+        {
+            var user = _userService.GetByMail(userEmail).Data;
+            return new SuccessDataResult<List<Room>>(_roomDal.GetList(room => room.Users.Contains(user)));
+        }
+
         public IResult RemoveUserFromRoom(string email, string roomName)
         {
             if (Guid.TryParse(roomName, out var assignedName))
             {
-                var userToRemove = _userService.GetByMail(email).Data;
-
-                if(userToRemove == null)
-                {
-                    return new ErrorResult(Messages.UserNotFound);
-                }
 
                 var removeRoom = _roomDal.GetOne(room => room.RoomName == assignedName);
 
@@ -111,7 +111,9 @@ namespace Business.Concrete
                     return new ErrorResult(Messages.RoomMessages.RoomDoesNotExist);
                 }
 
-                if (!removeRoom.Users.Contains(userToRemove))
+                var userToRemove = removeRoom.Users.Find(x => x.Email == email);
+
+                if (removeRoom.Users.Find(user => user.Email == userToRemove.Email) == null)
                 {
                     return new ErrorResult(Messages.RoomMessages.UserIsNotInThisRoom);
                 }

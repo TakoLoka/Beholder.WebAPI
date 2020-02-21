@@ -16,7 +16,6 @@ namespace Business.Constants
         public class RoomMessages
         {
             public static string UserAddedToRoom(User user, Room room) => user.Email + ": Added to Room: " + room.RoomName;
-            public static string RoomCreated = "Room Created";
             public static string UserIsNotTheCreator = "The user is not the creator of this room.";
             public static string RoomDoesNotExist = "The Room does not exist";
 

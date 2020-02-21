@@ -29,22 +29,22 @@ namespace WebAPI.Controllers
             return Ok(_roomService.GetRooms());
         }
 
-        [Route("rooms")]
-        [DMAuthorize]
-        [HttpPost]
-        public IActionResult CreateRoom()
+        [Route("rooms/user")]
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetRoomsWithUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             if (identity != null)
             {
                 IEnumerable<Claim> claims = identity.Claims;
                 string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
-                var result = _roomService.CreateRoom(userEmail);
+                var result = _roomService.GetRoomsWithUser(userEmail);
                 if (!result.Success)
                 {
                     return BadRequest(result.Message);
                 }
-                return CreatedAtAction(nameof(CreateRoom), result);
+                return Ok(result.Message);
             }
 
             return BadRequest();

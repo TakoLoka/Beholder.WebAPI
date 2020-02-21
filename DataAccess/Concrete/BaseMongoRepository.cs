@@ -47,8 +47,7 @@ namespace DataAccess.Concrete
 
         public virtual void Update(string id, TEntity entity)
         {
-            var docId = new ObjectId(id);
-            mongoCollection.ReplaceOne(x => entity.Id == docId, entity);
+            mongoCollection.ReplaceOne(x => entity.Id.ToString() == id, entity);
         }
 
         public virtual void Delete(TEntity entity)
