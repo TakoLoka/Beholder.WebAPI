@@ -40,13 +40,14 @@ namespace Business.Constants
 
         public class AuthMessages
         {
-            #region Authentication and Authorization Messages
             public static string UserAlreadyExists = "User Already Exists";
             public static string PasswordError = "Incorrect Password";
             public static string LoginSuccessful = "Successful Login";
             public static string RegisterSuccessful = "User Successfully Registered";
             public static string AccessTokenCreated = "Access Token Created";
-            #endregion
+            public static string PasswordsDoNotMatch = "Passwords Doesn't Match";
+            public static string UserMustBeOlder = "User Must Be Older Than " + CheckValues.AgeBarrier;
+            public static string PasswordLengthError = $"Password's Length must be between {CheckValues.PasswordMinLength} and {CheckValues.PasswordMaxLength}";
         }
     }
 }

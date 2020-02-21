@@ -8,6 +8,7 @@ using Core.Utilities.Security.Jwt;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Business.Concrete
 {
@@ -55,6 +56,21 @@ namespace Business.Concrete
             if (UserExists(userForRegisterDto.Email).Success)
             {
                 return new ErrorDataResult<User>(Messages.AuthMessages.UserAlreadyExists);
+            }
+
+            if (userForRegisterDto.BirthDay.Year > DateTime.Now.AddYears(-CheckValues.AgeBarrier).Year)
+            {
+                return new ErrorDataResult<User>(Messages.AuthMessages.UserMustBeOlder);
+            }
+
+            if(userForRegisterDto.Password.Length < CheckValues.PasswordMinLength || userForRegisterDto.Password.Length > CheckValues.PasswordMaxLength)
+            {
+                return new ErrorDataResult<User>(Messages.AuthMessages.PasswordLengthError);
+            }
+
+            if (!userForRegisterDto.Password.Equals(userForRegisterDto.ConfirmPassword))
+            {
+                return new ErrorDataResult<User>(Messages.AuthMessages.PasswordsDoNotMatch);
             }
 
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
