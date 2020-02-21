@@ -16,7 +16,7 @@ using WebAPI.Messages;
 
 namespace WebAPI.Hubs
 {
-    public class BattlemapHub: Hub
+    public class BattlemapHub : Hub
     {
         private readonly IRoomService _roomService;
 
@@ -55,20 +55,13 @@ namespace WebAPI.Hubs
         public async Task SendMessage(string roomName, string message)
         {
             var identity = Context.User.Identity as ClaimsIdentity;
-            if (identity.IsAuthenticated)
-            {
-                IEnumerable<Claim> claims = identity.Claims;
-                string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
-                await Clients.Group(roomName).SendAsync("MESSAGE", $"{userEmail}: {message}");
-            }
-            else
-            {
-                await Clients.Caller.SendAsync("BAD_REQUEST");
-            }
+            IEnumerable<Claim> claims = identity.Claims;
+            string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
+            await Clients.Group(roomName).SendAsync("MESSAGE", $"{userEmail}: {message}");
         }
 
         [Authorize]
-        public async Task Join(string roomName)
+        public async Task JoinRoom(string roomName)
         {
             var identity = Context.User.Identity as ClaimsIdentity;
             if (identity.IsAuthenticated)
@@ -92,7 +85,7 @@ namespace WebAPI.Hubs
             }
         }
         [Authorize]
-        public async Task Leave(string roomName)
+        public async Task LeaveRoom(string roomName)
         {
             var identity = Context.User.Identity as ClaimsIdentity;
             if (identity.IsAuthenticated)

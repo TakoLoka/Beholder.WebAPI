@@ -1,0 +1,20 @@
+﻿@model WebAPI.Models.Documentation.Response
+
+<div>
+    <h4>Response</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Target)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Target)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Payload)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Payload)
+        </dd>
+    </dl>
+</div>

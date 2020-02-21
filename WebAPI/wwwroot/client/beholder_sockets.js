@@ -74,7 +74,7 @@ document.getElementById("connectButton").addEventListener("click", function () {
                         event.preventDefault();
                         roomName = document.getElementById("roomName").value;
                         if (roomName) {
-                            connection.invoke("Join", roomName).catch(function (err) {
+                            connection.invoke("JoinRoom", roomName).catch(function (err) {
                                 return console.error(err);
                             });
                         } else {
@@ -118,7 +118,7 @@ document.getElementById("connectButton").addEventListener("click", function () {
                     .addEventListener('click', function (event) {
                         event.preventDefault();
                         console.log(connection);
-                        connection.invoke("Leave", roomName).catch(function (err) {
+                        connection.invoke("LeaveRoom", roomName).catch(function (err) {
                             return console.error(err);
                         });
                     });

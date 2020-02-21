@@ -34,7 +34,7 @@ namespace WebAPI
 
             services.AddCors(options => options.AddPolicy("AllowOrigin", builder => builder.WithOrigins()));
 
-            //services.AddMvc();
+            services.AddMvc();
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -109,7 +109,7 @@ namespace WebAPI
             {
                 endpoints.MapHub<BattlemapHub>("battlemap");
                 endpoints.MapControllers();
-                //endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}");
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}");
             });
         }
     }

@@ -1,0 +1,47 @@
+﻿@model IEnumerable<WebAPI.Models.Documentation.Invocation>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MethodName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Authorization)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OnSuccess)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OnError)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MethodName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Authorization)
+            </td>
+            <td>
+                @Html.PartialAsync("Response", item.OnSuccess)
+            </td>
+            <td>
+                @Html.PartialAsync("Response", item.OnError)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
