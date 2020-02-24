@@ -5,7 +5,7 @@
   "instructions": [
     {
       "title": "Implementation",
-      "text": "You need to install a SignalR Client package according to your platform. Follow the steps to establish a connection using the battlemapRoute given in this documentation."
+      "text": "You need to install a SignalR Client package according to your platform. Follow the steps to establish a connection using the Battlemap Route given in this documentation."
     },
     {
       "title": "Invoke Methods",

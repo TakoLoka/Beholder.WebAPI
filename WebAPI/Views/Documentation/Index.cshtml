@@ -5,38 +5,35 @@
 }
 
 <div>
-    <h4>Battlemap Documentation</h4>
+    <h1 class="text-center">@Model.Title</h1>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class="col-sm-2">
+        <dt class="col-12 text-center">
             @Html.DisplayNameFor(model => model.Version)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-12 text-center">
             @Html.DisplayFor(model => model.Version)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-12 text-center">
             @Html.DisplayNameFor(model => model.BattlemapRoute)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-12 text-center">
             @Html.DisplayFor(model => model.BattlemapRoute)
         </dd>
     </dl>
     <div class="instructions">
+        <h3 class="text-center">Instruction List</h3>
         @await Html.PartialAsync("InstructionList", Model.Instructions)
     </div>
     <div class="invocations">
+        <h3 class="text-center">Invocation List</h3>
         @await Html.PartialAsync("InvocationList", Model.Invocations)
     </div>
-    <div class="invocations">
+    <div class="receive-methods">
+        <h3 class="text-center">Receive Method List</h3>
         @await Html.PartialAsync("ReceiveMethodList", Model.ReceiveMethods)
     </div>
-
+    <h2>Notes</h2>
     <ul class="notes">
         @foreach (var note in Model.Notes)
         {
