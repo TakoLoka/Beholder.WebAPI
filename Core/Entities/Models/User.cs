@@ -25,5 +25,7 @@ namespace Core.Entities.Models
         public DateTime BirthDay { get; set; }
         [BsonElement("OperationClaims")]
         public List<OperationClaim> OperationClaims { get; set; }
+        [BsonElement("Characters")]
+        public List<Character> Characters { get; set; }
     }
 }

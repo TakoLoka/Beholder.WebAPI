@@ -30,7 +30,7 @@ namespace Business.Constants
 
         public class UserMessages
         {
-
+            public static string UserUpdated = "User Updated Successfully";
             public static string UserCreated(User user) => user.Email + ": Created";
             public static string UserBecamePremiumDM(User user) => user.Email + ": Became Premium Dungeon Master";
             public static string UserBecamePremiumPlayer(User user) => user.Email + ": Became Premium Player";

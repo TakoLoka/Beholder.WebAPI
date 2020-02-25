@@ -36,18 +36,16 @@ namespace DataAccess.Concrete
 
         public virtual TEntity GetById(string id)
         {
-            var docId = new ObjectId(id);
-            return mongoCollection.Find(x => x.Id == docId).FirstOrDefault();
+            return mongoCollection.Find(x => x.Id == id).FirstOrDefault();
         }
 
         public virtual void Create(TEntity entity)
         {
             mongoCollection.InsertOne(entity);
         }
-
         public virtual void Update(string id, TEntity entity)
         {
-            mongoCollection.ReplaceOne(x => entity.Id.ToString() == id, entity);
+            mongoCollection.ReplaceOne(x => x.Id == id, entity, new ReplaceOptions { IsUpsert = false});
         }
 
         public virtual void Delete(TEntity entity)
@@ -60,8 +58,7 @@ namespace DataAccess.Concrete
 
         public virtual void Delete(string id)
         {
-            var docId = new ObjectId(id);
-            mongoCollection.DeleteOne(x => x.Id == docId);
+            mongoCollection.DeleteOne(x => x.Id == id);
         }
     }
 }

@@ -13,5 +13,6 @@ namespace Business.Abstract
         IDataResult<User> GetByMail(string email);
         IResult BecomeDungeonMasterPremium(User user);
         IResult BecomePlayerPremium(User user);
+        IResult UpdateUser(User user);
     }
 }

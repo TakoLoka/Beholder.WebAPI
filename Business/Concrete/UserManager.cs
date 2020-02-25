@@ -24,24 +24,24 @@ namespace Business.Concrete
 
         public IResult BecomeDungeonMasterPremium(User user)
         {
-            var premiumUser = _userDal.GetOne(usr => user.Id == user.Id);
+            var premiumUser = _userDal.GetOne(usr => user.Id == usr.Id);
             if (premiumUser.OperationClaims == null)
             {
-                premiumUser.OperationClaims = new List<OperationClaim>();
+                user.OperationClaims = new List<OperationClaim>();
             }
             else if (premiumUser.OperationClaims.FirstOrDefault(x => x.Name == OperationClaimNames.DungeonMaster) != null)
             {
                 return new ErrorResult(Messages.UserMessages.UserAlreadyPremiumDM(premiumUser));
             }
 
-            premiumUser.OperationClaims.Add(_operationClaimDal.GetOperationClaimByName(OperationClaimNames.DungeonMaster));
-            _userDal.Update(user.Id.ToString(), premiumUser);
+            user.OperationClaims.Add(_operationClaimDal.GetOperationClaimByName(OperationClaimNames.DungeonMaster));
+            _userDal.Update(user.Id.ToString(), user);
             return new SuccessResult(Messages.UserMessages.UserBecamePremiumDM(premiumUser));
         }
 
         public IResult BecomePlayerPremium(User user)
         {
-            var premiumUser = _userDal.GetOne(usr => user.Id == user.Id);
+            var premiumUser = _userDal.GetOne(usr => user.Id == usr.Id);
             if (premiumUser.OperationClaims == null)
             {
                 premiumUser.OperationClaims = new List<OperationClaim>();
@@ -51,8 +51,8 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.UserMessages.UserAlreadyPremiumPlayer(premiumUser));
             }
 
-            premiumUser.OperationClaims.Add(_operationClaimDal.GetOperationClaimByName(OperationClaimNames.Player));
-            _userDal.Update(user.Id.ToString(), premiumUser);
+            user.OperationClaims.Add(_operationClaimDal.GetOperationClaimByName(OperationClaimNames.Player));
+            _userDal.Update(user.Id.ToString(), user);
             return new SuccessResult(Messages.UserMessages.UserBecamePremiumPlayer(premiumUser));
         }
 
@@ -70,6 +70,12 @@ namespace Business.Concrete
         public IDataResult<List<OperationClaim>> GetClaims(User user)
         {
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetOne(usr => usr.Id == user.Id).OperationClaims.ToList());
+        }
+
+        public IResult UpdateUser(User user)
+        {
+            _userDal.Update(user.Id.ToString(), user);
+            return new SuccessResult(Messages.UserMessages.UserUpdated);
         }
     }
 }

@@ -13,11 +13,11 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SocketController : ControllerBase
+    public class SocketsController : ControllerBase
     {
         private readonly IRoomService _roomService;
 
-        public SocketController(IRoomService roomService)
+        public SocketsController(IRoomService roomService)
         {
             _roomService = roomService;
         }
@@ -44,7 +44,7 @@ namespace WebAPI.Controllers
                 {
                     return BadRequest(result.Message);
                 }
-                return Ok(result.Message);
+                return Ok(result);
             }
 
             return BadRequest();
@@ -65,7 +65,7 @@ namespace WebAPI.Controllers
                 {
                     return BadRequest(result.Message);
                 }
-                return Ok(result.Message);
+                return Ok(result);
             }
 
             return BadRequest();

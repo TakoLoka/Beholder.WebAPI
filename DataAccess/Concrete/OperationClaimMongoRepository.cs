@@ -21,8 +21,7 @@ namespace DataAccess.Concrete
 
         public OperationClaim GetOperationClaimById(string id)
         {
-            ObjectId docId = new ObjectId(id);
-            return ConnectCollection().Find(x => x.Id == docId).FirstOrDefault();
+            return ConnectCollection().Find(x => x.Id == id).FirstOrDefault();
         }
 
         public OperationClaim GetOperationClaimByName(string name)
