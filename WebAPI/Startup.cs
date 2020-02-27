@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WebAPI.Hubs;
+using WebAPI.Services.Cache.Redis;
 
 namespace WebAPI
 {
@@ -65,6 +66,12 @@ namespace WebAPI
                     IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                 };
             });
+
+            services.AddDistributedRedisCache(option => {
+                option.Configuration = "127.0.0.1:6379";
+            });
+
+            services.AddScoped<IRedisService, RedisManager>();
 
             services.AddSwaggerGen(doc => {
                 doc.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Beholder API", Version = "V1" });
