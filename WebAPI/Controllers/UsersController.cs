@@ -29,21 +29,35 @@ namespace WebAPI.Controllers
         [Authorize]
         public IActionResult GetCurrentUser()
         {
-            return BaseControllerExtension.OperateOnEmail(this, _userService.GetByMail);
+            return this.OperateOnEmail(_userService.GetByMail);
         }
 
         [HttpPost("Premium/DM")]
         [Authorize]
         public IActionResult BecomePremiumDM()
         {
-            return BaseControllerExtension.OperateOnUser(this, _userService, _userService.BecomeDungeonMasterPremium, _authService.CreateAccessToken);
+            return this.OperateOnUser(_userService, _userService.BecomeDungeonMasterPremium, _authService.CreateAccessToken);
         }
 
         [HttpPost("Premium/Player")]
         [Authorize]
         public IActionResult BecomePremiumPlayer()
         {
-            return BaseControllerExtension.OperateOnUser(this, _userService, _userService.BecomePlayerPremium, _authService.CreateAccessToken);
+            return this.OperateOnUser(_userService, _userService.BecomePlayerPremium, _authService.CreateAccessToken);
+        }
+
+        [HttpDelete("Premium/DM")]
+        [Authorize]
+        public IActionResult RemoveDungeonMasterPremium()
+        {
+            return this.OperateOnUser(_userService, _userService.RemoveDungeonMasterPremium, _authService.CreateAccessToken);
+        }
+
+        [HttpDelete("Premium/Player")]
+        [Authorize]
+        public IActionResult RemovePlayerPremium()
+        {
+            return this.OperateOnUser(_userService, _userService.RemovePlayerPremium, _authService.CreateAccessToken);
         }
     }
 }

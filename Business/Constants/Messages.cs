@@ -36,6 +36,10 @@ namespace Business.Constants
             public static string UserBecamePremiumPlayer(User user) => user.Email + ": Became Premium Player";
             public static string UserAlreadyPremiumDM(User user) => user.Email + ": Already Premium Dungeon Master";
             public static string UserAlreadyPremiumPlayer(User user) => user.Email + ": Already Premium Player";
+            public static string UserNotPremiumPlayer(User user) => user.Email + ": Not Premium Player";
+            public static string UserRemovedPremiumPlayer(User user) => user.Email + ": Removed Premium Player";
+            public static string UserNotPremiumDM(User user) => user.Email + ": Not Premium DM";
+            public static string UserRemovedPremiumDM(User user) => user.Email + ": Removed Premium DM";
         }
 
         public class AuthMessages
@@ -48,6 +52,7 @@ namespace Business.Constants
             public static string PasswordsDoNotMatch = "Passwords Doesn't Match";
             public static string UserMustBeOlder = "User Must Be Older Than " + CheckValues.AgeBarrier;
             public static string PasswordLengthError = $"Password's Length must be between {CheckValues.PasswordMinLength} and {CheckValues.PasswordMaxLength}";
+            public static string InvalidEmail = "Provided Email is NOT Valid";
         }
     }
 }

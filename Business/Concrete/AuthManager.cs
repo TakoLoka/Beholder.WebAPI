@@ -58,6 +58,11 @@ namespace Business.Concrete
                 return new ErrorDataResult<User>(Messages.AuthMessages.UserAlreadyExists);
             }
 
+            if (!(userForRegisterDto.Email.Contains("@")))
+            {
+                return new ErrorDataResult<User>(Messages.AuthMessages.InvalidEmail);
+            }
+
             if (userForRegisterDto.BirthDay.Year > DateTime.Now.AddYears(-CheckValues.AgeBarrier).Year)
             {
                 return new ErrorDataResult<User>(Messages.AuthMessages.UserMustBeOlder);

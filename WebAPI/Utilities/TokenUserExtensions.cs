@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Utilities
 {
-    public static class BaseControllerExtension
+    public static class TokenUserExtensions
     {
         public static IActionResult OperateOnEmail(this ControllerBase controller, params Func<string, IResult>[] checkFunctions)
         {
@@ -42,10 +42,10 @@ namespace WebAPI.Utilities
             {
                 IEnumerable<Claim> claims = identity.Claims;
                 string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
-                var user = _userService.GetByMail(userEmail).Data;
                 IResult result = new ErrorResult();
                 foreach (var fn in checkFunctions)
                 {
+                    var user = _userService.GetByMail(userEmail).Data;
                     result = fn.Invoke(user);
                     if (!result.Success)
                     {

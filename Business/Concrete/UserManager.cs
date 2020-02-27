@@ -72,6 +72,40 @@ namespace Business.Concrete
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetOne(usr => usr.Id == user.Id).OperationClaims.ToList());
         }
 
+        public IResult RemoveDungeonMasterPremium(User user)
+        {
+            var premiumUser = _userDal.GetOne(usr => user.Id == usr.Id);
+            if (premiumUser.OperationClaims == null)
+            {
+                return new ErrorResult(Messages.UserMessages.UserNotPremiumDM(premiumUser));
+            }
+            else if (premiumUser.OperationClaims.FirstOrDefault(x => x.Name == OperationClaimNames.DungeonMaster) == null)
+            {
+                return new ErrorResult(Messages.UserMessages.UserNotPremiumDM(premiumUser));
+            }
+            var removeClaim = user.OperationClaims.Find(claim => claim.Id.Equals(_operationClaimDal.GetOperationClaimByName(OperationClaimNames.DungeonMaster).Id));
+            user.OperationClaims.Remove(removeClaim);
+            _userDal.Update(user.Id.ToString(), user);
+            return new SuccessResult(Messages.UserMessages.UserRemovedPremiumDM(premiumUser));
+        }
+
+        public IResult RemovePlayerPremium(User user)
+        {
+            var premiumUser = _userDal.GetOne(usr => user.Id == usr.Id);
+            if (premiumUser.OperationClaims == null)
+            {
+                return new ErrorResult(Messages.UserMessages.UserNotPremiumPlayer(premiumUser));
+            }
+            else if (premiumUser.OperationClaims.FirstOrDefault(x => x.Name == OperationClaimNames.Player) == null)
+            {
+                return new ErrorResult(Messages.UserMessages.UserNotPremiumPlayer(premiumUser));
+            }
+            var removeClaim = user.OperationClaims.Find(claim => claim.Id.Equals(_operationClaimDal.GetOperationClaimByName(OperationClaimNames.Player).Id));
+            user.OperationClaims.Remove(removeClaim);
+            _userDal.Update(user.Id.ToString(), user);
+            return new SuccessResult(Messages.UserMessages.UserRemovedPremiumPlayer(premiumUser));
+        }
+
         public IResult UpdateUser(User user)
         {
             _userDal.Update(user.Id.ToString(), user);
