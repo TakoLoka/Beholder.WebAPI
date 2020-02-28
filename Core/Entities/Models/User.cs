@@ -14,6 +14,7 @@ namespace Core.Entities.Models
         [BsonElement("LastName")]
         public string LastName { get; set; }
         [BsonElement("Email")]
+        [BsonRequired]
         public string Email { get; set; }
         [BsonElement("PasswordHash")]
         public byte[] PasswordHash { get; set; }

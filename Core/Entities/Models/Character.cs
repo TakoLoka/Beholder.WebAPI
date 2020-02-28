@@ -2,17 +2,19 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Core.Entities.Models
 {
     public class Character:AbstractMongoEntity
     {
+        [Required]
         [BsonElement("Name")]
+        [BsonRequired]
         public string Name { get; set; }
         [BsonElement("Coordinates")]
         public Point Coordinates { get; set; }
-
         public struct Point
         {
             private int x;

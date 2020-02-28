@@ -7,15 +7,19 @@ using Core.Utilities.Security.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WebAPI.Hubs;
+using WebAPI.Services.Cache;
 using WebAPI.Services.Cache.Redis;
+using WebAPI.Utilities;
 
 namespace WebAPI
 {
@@ -71,7 +75,8 @@ namespace WebAPI
                 option.Configuration = "127.0.0.1:6379";
             });
 
-            services.AddScoped<IRedisService, RedisManager>();
+            services.AddScoped<ICacheService, RedisManager>();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSwaggerGen(doc => {
                 doc.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Beholder API", Version = "V1" });
@@ -81,7 +86,7 @@ namespace WebAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ICacheService cacheService)
         {
             if (env.IsDevelopment())
             {
@@ -109,6 +114,20 @@ namespace WebAPI
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
+            app.Use(async (context, next) =>
+            {
+
+                var token = context.Request.Headers["Authorization"];
+                var blackList = cacheService.GetAll("ExpiredToken");
+                bool validationResult = string.IsNullOrEmpty(blackList.Find(expToken => expToken.Equals(token)));
+                if (validationResult == false)
+                {
+                    context.Response.StatusCode = 401;
+                    await context.Response.WriteAsync("Token Expired");
+                }
+                await next.Invoke();
+            });
 
             app.UseAuthorization();
 

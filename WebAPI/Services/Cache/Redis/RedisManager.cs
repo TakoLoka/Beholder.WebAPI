@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Services.Cache.Redis
 {
-    public class RedisManager : IRedisService
+    public class RedisManager : ICacheService
     {
         public List<string> GetAll(string searchKey)
         {

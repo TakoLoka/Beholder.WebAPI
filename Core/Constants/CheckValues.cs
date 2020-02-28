@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Business.Constants
+namespace Core.Constants
 {
     public class CheckValues
     {

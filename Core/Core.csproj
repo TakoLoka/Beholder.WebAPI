@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Utilities\Cache\" />
     <Folder Include="Utilities\Security\Decryption\" />
   </ItemGroup>
 
