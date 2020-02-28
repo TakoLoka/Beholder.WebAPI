@@ -27,11 +27,5 @@ namespace WebAPI.Controllers
             DocumentationModel model = JsonConvert.DeserializeObject<DocumentationModel>(System.IO.File.ReadAllText(_hostEnvironment.WebRootPath + "/Docs/battlemap_doc.json"));
             return View(model);
         }
-
-        [Route("test/redis")]
-        public IActionResult TestRedis()
-        {
-            return Ok(_cacheService.GetAll("ExpiredToken"));
-        }
     }
 }

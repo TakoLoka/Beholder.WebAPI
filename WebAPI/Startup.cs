@@ -117,14 +117,16 @@ namespace WebAPI
 
             app.Use(async (context, next) =>
             {
-
                 var token = context.Request.Headers["Authorization"];
-                var blackList = cacheService.GetAll("ExpiredToken");
-                bool validationResult = string.IsNullOrEmpty(blackList.Find(expToken => expToken.Equals(token)));
-                if (validationResult == false)
+                if (!string.IsNullOrEmpty(token))
                 {
-                    context.Response.StatusCode = 401;
-                    await context.Response.WriteAsync("Token Expired");
+                    var blackList = cacheService.GetAll("ExpiredToken");
+                    bool validationResult = string.IsNullOrEmpty(blackList.Find(expToken => expToken.Equals(token)));
+                    if (validationResult == false)
+                    {
+                        context.Response.StatusCode = 401;
+                        await context.Response.WriteAsync("Token Expired");
+                    }
                 }
                 await next.Invoke();
             });
