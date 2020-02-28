@@ -9,8 +9,32 @@ function appendMessage(message) {
     ul.appendChild(li);
 }
 
+document.getElementById("loginButton").addEventListener("click", function () {
+    var url = "/api/auth/login";
+
+    var data = {};
+    data.email = document.getElementById("email").value;
+    data.password = document.getElementById("password").value;
+    var json = JSON.stringify(data);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    xhr.onload = function () {
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            var token = JSON.parse(xhr.responseText) && JSON.parse(xhr.responseText).data.token;
+            localStorage.setItem("access_token", token);
+            alert("Logged In.");
+        } else {
+            var err = xhr.responseText;
+            alert("Error: ", err);
+        }
+    }
+    xhr.send(json);
+});
+
 document.getElementById("connectButton").addEventListener("click", function () {
-    userToken = document.getElementById("userToken").value;
+    userToken = localStorage.getItem("access_token");
     if (userToken) {
         connection = new signalR.HubConnectionBuilder()
             .withUrl("http://localhost:50416/battlemap", { accessTokenFactory: () => userToken })
@@ -86,7 +110,6 @@ document.getElementById("connectButton").addEventListener("click", function () {
                     .getElementById("createRoomButton")
                     .addEventListener('click', function (event) {
                         event.preventDefault();
-                        userToken = document.getElementById("userToken").value;
                         if (userToken) {
                             connection.invoke("CreateRoom")
                                 .then(message => {
@@ -117,7 +140,7 @@ document.getElementById("connectButton").addEventListener("click", function () {
                     .getElementById("leaveRoomButton")
                     .addEventListener('click', function (event) {
                         event.preventDefault();
-                        console.log(connection);
+                        roomName = document.getElementById("roomName").value;
                         connection.invoke("LeaveRoom", roomName).catch(function (err) {
                             return console.error(err);
                         });

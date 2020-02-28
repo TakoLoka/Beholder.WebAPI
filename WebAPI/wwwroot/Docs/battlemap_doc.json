@@ -14,6 +14,10 @@
     {
       "title": "Receive Methods",
       "text": "Methods which can be genrated on a client device listened (sent by server) using: connection.on(<payload>, data)"
+    },
+    {
+      "title": "Demo Client",
+      "text": "You can find a demo client developed using JavaScript in <a href='/client/index.html'>www.takoloka.com/client/index.html</a>"
     }
   ],
   "notes": [

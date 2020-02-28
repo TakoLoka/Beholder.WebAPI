@@ -10,9 +10,13 @@
     <h3 style="text-align: center" id="tokenOutput"></h3>
     <div class="container">
         <div class="row">&nbsp;</div>
-        <div class="row">
-            <div class="col-2">User Token</div>
-            <div class="col-4"><input type="text" id="userToken" /></div>
+        <div>
+            <div class="col-2">Email</div>
+            <div class="col-4"><input type="email" id="email" /></div>
+        </div>
+        <div>
+            <div class="col-2">Password</div>
+            <div class="col-4"><input type="password" id="password" /></div>
         </div>
         <div class="row">
             <div class="col-2">Room Name</div>
@@ -25,6 +29,7 @@
         <div class="row">&nbsp;</div>
         <div class="row">
             <div class="col-6">
+                <input type="button" id="loginButton" value="Login" />
                 <input type="button" id="connectButton" value="Connect" />
                 <input type="button" id="createRoomButton" value="Create A Room" />
                 <input type="button" id="sendMessageButton" value="Send Message" />
