@@ -1,8 +1,4 @@
-﻿const apiUrl = "http://localhost:50416/api";
-var connection = null;
-var userToken = "";
-
-function appendMessage(message) {
+﻿function appendMessage(message) {
     var ul = document.getElementById("messagesList");
     var li = document.createElement("li");
     li.appendChild(document.createTextNode(message));
@@ -26,18 +22,17 @@ document.getElementById("loginButton").addEventListener("click", function () {
             localStorage.setItem("access_token", token);
             alert("Logged In.");
         } else {
-            var err = xhr.responseText;
-            alert("Error: ", err);
+            var err = JSON.parse(xhr.responseText);
+            console.log("Error: " + err);
         }
     }
     xhr.send(json);
 });
 
 document.getElementById("connectButton").addEventListener("click", function () {
-    userToken = localStorage.getItem("access_token");
-    if (userToken) {
-        connection = new signalR.HubConnectionBuilder()
-            .withUrl("http://localhost:50416/battlemap", { accessTokenFactory: () => userToken })
+    if (localStorage.getItem("access_token")) {
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl("http://localhost:50416/battlemap", { accessTokenFactory: () => localStorage.getItem("access_token") })
             .configureLogging(signalR.LogLevel.Information)
             .build();
 
@@ -110,7 +105,7 @@ document.getElementById("connectButton").addEventListener("click", function () {
                     .getElementById("createRoomButton")
                     .addEventListener('click', function (event) {
                         event.preventDefault();
-                        if (userToken) {
+                        if (localStorage.getItem("access_token")) {
                             connection.invoke("CreateRoom")
                                 .then(message => {
                                     document.getElementById("tokenOutput").innerHTML = message;
@@ -134,6 +129,7 @@ document.getElementById("connectButton").addEventListener("click", function () {
                         connection.invoke("SendMessage", roomName, message).catch(function (err) {
                             return console.error(err);
                         });
+                        this.value = "";
                     });
 
                 document

@@ -118,10 +118,10 @@ namespace Business.Concrete
                     return new ErrorResult(Messages.RoomMessages.UserIsNotInThisRoom);
                 }
 
-                if (userToRemove.Email == removeRoom.Creator.Email)
-                {
-                    return DeleteRoom(userToRemove.Email, removeRoom.RoomName.ToString());
-                }
+                //if (userToRemove.Email == removeRoom.Creator.Email)
+                //{
+                //    return DeleteRoom(userToRemove.Email, removeRoom.RoomName.ToString());
+                //}
 
                 removeRoom.Users.Remove(userToRemove);
                 _roomDal.Update(removeRoom.Id.ToString(), removeRoom);
