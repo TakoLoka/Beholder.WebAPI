@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Utilities\Cache\" />
+    <Compile Remove="Utilities\Cache\**" />
+    <EmbeddedResource Remove="Utilities\Cache\**" />
+    <None Remove="Utilities\Cache\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Utilities\Security\Decryption\" />
   </ItemGroup>
 

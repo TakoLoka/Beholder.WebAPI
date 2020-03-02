@@ -32,7 +32,9 @@ document.getElementById("loginButton").addEventListener("click", function () {
 document.getElementById("connectButton").addEventListener("click", function () {
     if (localStorage.getItem("access_token")) {
         var connection = new signalR.HubConnectionBuilder()
-            .withUrl("http://localhost:50416/battlemap", { accessTokenFactory: () => localStorage.getItem("access_token") })
+            .withUrl("http://www.takoloka.com/battlemap", {
+                accessTokenFactory: () => localStorage.getItem("access_token")
+            })
             .configureLogging(signalR.LogLevel.Information)
             .build();
 
@@ -129,7 +131,7 @@ document.getElementById("connectButton").addEventListener("click", function () {
                         connection.invoke("SendMessage", roomName, message).catch(function (err) {
                             return console.error(err);
                         });
-                        this.value = "";
+                        document.getElementById("messageInput").value = "";
                     });
 
                 document
