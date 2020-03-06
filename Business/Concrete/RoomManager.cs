@@ -20,25 +20,29 @@ namespace Business.Concrete
             _roomDal = roomDal;
         }
 
-        public IResult AddUserToRoom(string email, string roomName)
+        public IResult AddUserToRoom(string email, string roomId)
         {
-            if(Guid.TryParse(roomName, out var parsedRoomName))
+            if(Guid.TryParse(roomId, out var parsedRoomId))
             {
                 var userToAdd = _userService.GetByMail(email).Data;
                 if(userToAdd == null)
                 {
                     return new ErrorResult(Messages.UserNotFound);
                 }
-                var roomToAdd = _roomDal.GetOne(room => room.RoomName == parsedRoomName);
+                var roomToAdd = _roomDal.GetOne(room => room.RoomId == parsedRoomId);
                 if (roomToAdd == null)
                 {
                     return new ErrorResult(Messages.RoomMessages.RoomDoesNotExist);
                 }
 
+                if (roomToAdd.Users == null)
+                    roomToAdd.Users = new List<User>();
+
                 if (roomToAdd.Users.Find(user => user.Email == userToAdd.Email) != null)
                 {
                     return new ErrorResult(Messages.RoomMessages.UserAlreadyExists);
                 }
+
                 roomToAdd.Users.Add(userToAdd);
                 _roomDal.Update(roomToAdd.Id.ToString(), roomToAdd);
 
@@ -48,27 +52,26 @@ namespace Business.Concrete
             return new ErrorResult(Messages.GuidError);
         }
 
-        public IResult CreateRoom(string creatorEmail)
+        public IResult CreateRoom(string creatorEmail, string roomName, string description)
         {
-            var assignedName = Guid.NewGuid();
+            var assignedId = Guid.NewGuid();
             var creator = _userService.GetByMail(creatorEmail).Data;
-            List<User> users = new List<User>();
-            users.Add(creator);
             _roomDal.Create(new Room
             {
-                RoomName = assignedName,
+                RoomId = assignedId,
                 Creator = creator,
-                Users = users
+                RoomName = roomName,
+                Description = description
             });
 
-            return new SuccessResult(assignedName.ToString());
+            return new SuccessResult(assignedId.ToString());
         }
 
-        public IResult DeleteRoom(string creatorEmail, string roomName)
+        public IResult DeleteRoom(string creatorEmail, string roomId)
         {
-            if (Guid.TryParse(roomName, out var assignedName))
+            if (Guid.TryParse(roomId, out var assignedId))
             {
-                var roomToDelete = _roomDal.GetOne(room => room.RoomName == assignedName);
+                var roomToDelete = _roomDal.GetOne(room => room.RoomId == assignedId);
                 if (creatorEmail == roomToDelete.Creator.Email)
                 {
                     _roomDal.Delete(roomToDelete);
@@ -82,10 +85,10 @@ namespace Business.Concrete
             return new ErrorResult(Messages.GuidError);
         }
 
-        public IDataResult<Room> GetRoomByName(string roomName)
+        public IDataResult<Room> GetRoomById(string roomId)
         {
-            var assignedName = new Guid(roomName);
-            return new SuccessDataResult<Room>(_roomDal.GetOne(room => room.RoomName == assignedName));
+            var assignedId = new Guid(roomId);
+            return new SuccessDataResult<Room>(_roomDal.GetOne(room => room.RoomId == assignedId));
         }
 
         public IDataResult<List<Room>> GetRooms()
@@ -99,12 +102,12 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Room>>(_roomDal.GetList(room => room.Users.Contains(user)));
         }
 
-        public IResult RemoveUserFromRoom(string email, string roomName)
+        public IResult RemoveUserFromRoom(string email, string roomId)
         {
-            if (Guid.TryParse(roomName, out var assignedName))
+            if (Guid.TryParse(roomId, out var assignedId))
             {
 
-                var removeRoom = _roomDal.GetOne(room => room.RoomName == assignedName);
+                var removeRoom = _roomDal.GetOne(room => room.RoomId == assignedId);
 
                 if (removeRoom == null)
                 {
@@ -120,7 +123,7 @@ namespace Business.Concrete
 
                 //if (userToRemove.Email == removeRoom.Creator.Email)
                 //{
-                //    return DeleteRoom(userToRemove.Email, removeRoom.RoomName.ToString());
+                //    return DeleteRoom(userToRemove.Email, removeRoom.RoomId.ToString());
                 //}
 
                 removeRoom.Users.Remove(userToRemove);
@@ -140,11 +143,16 @@ namespace Business.Concrete
             {
                 foreach (var room in rooms)
                 {
-                    RemoveUserFromRoom(userEmail, room.RoomName.ToString());
+                    RemoveUserFromRoom(userEmail, room.RoomId.ToString());
                 }
             }
 
             return new SuccessResult(Messages.RoomMessages.UserRemovedFromAllRooms);
+        }
+
+        public IDataResult<Room> GetRoomByName(string roomName)
+        {
+            return new SuccessDataResult<Room>(_roomDal.GetOne(room => room.RoomName == roomName));
         }
     }
 }

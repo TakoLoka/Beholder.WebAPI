@@ -7,6 +7,6 @@ namespace Core.Dtos
 {
     public class UserJoinRoomDto: IDto
     {
-        public string RoomName { get; set; }
+        public string RoomId { get; set; }
     }
 }

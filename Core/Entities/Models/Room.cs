@@ -8,8 +8,13 @@ namespace Core.Entities.Models
 {
     public class Room: AbstractMongoEntity
     {
+        [BsonElement("RoomId")]
+        public Guid RoomId { get; set; }
         [BsonElement("RoomName")]
-        public Guid RoomName { get; set; }
+        [BsonRequired]
+        public string RoomName { get; set; }
+        [BsonElement("Description")]
+        public string Description { get; set; }
         [BsonRequired]
         public User Creator { get; set; }
         [BsonElement("Users")]

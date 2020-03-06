@@ -29,10 +29,37 @@ document.getElementById("loginButton").addEventListener("click", function () {
     xhr.send(json);
 });
 
+document
+    .getElementById("createRoomButton")
+    .addEventListener('click', function (event) {
+        event.preventDefault();
+        var url = "/api/sockets/rooms";
+
+        var data = {};
+        data.roomName = document.getElementById("roomName").value;
+        data.description = document.getElementById("description").value;
+        var json = JSON.stringify(data);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('access_token'));
+        xhr.onload = function () {
+            if (xhr.readyState == 4 && xhr.status == "200") {
+                var roomName = JSON.parse(xhr.responseText) && JSON.parse(xhr.responseText).message;
+                appendMessage(roomName);
+            } else {
+                var err = JSON.parse(xhr.responseText);
+                console.log("Error: " + err);
+            }
+        }
+        xhr.send(json);
+    });
+
 document.getElementById("connectButton").addEventListener("click", function () {
     if (localStorage.getItem("access_token")) {
         var connection = new signalR.HubConnectionBuilder()
-            .withUrl("http://www.takoloka.com/battlemap", {
+            .withUrl("http://localhost:50416/battlemap", {
                 accessTokenFactory: () => localStorage.getItem("access_token")
             })
             .configureLogging(signalR.LogLevel.Information)
@@ -87,37 +114,19 @@ document.getElementById("connectButton").addEventListener("click", function () {
             .start()
             .then(function () {
                 appendMessage("connected");
-                let roomName = "";
+                let roomId = "";
 
                 document
                     .getElementById("joinRoomButton")
                     .addEventListener("click", function (event) {
                         event.preventDefault();
-                        roomName = document.getElementById("roomName").value;
-                        if (roomName) {
-                            connection.invoke("JoinRoom", roomName).catch(function (err) {
+                        roomId = document.getElementById("roomId").value;
+                        if (roomId) {
+                            connection.invoke("JoinRoom", roomId).catch(function (err) {
                                 return console.error(err);
                             });
                         } else {
                             alert("Please enter Room Name");
-                        }
-                    });
-
-                document
-                    .getElementById("createRoomButton")
-                    .addEventListener('click', function (event) {
-                        event.preventDefault();
-                        if (localStorage.getItem("access_token")) {
-                            connection.invoke("CreateRoom")
-                                .then(message => {
-                                    document.getElementById("tokenOutput").innerHTML = message;
-                                    console.log(message);
-                                })
-                                .catch(function (err) {
-                                    return console.error(err);
-                                });
-                        } else {
-                            alert("Please Enter User Token");
                         }
                     });
 
@@ -128,7 +137,7 @@ document.getElementById("connectButton").addEventListener("click", function () {
                         const message = document.getElementById("messageInput").value;
                         console.log(message.value);
                         console.log(roomName.value);
-                        connection.invoke("SendMessage", roomName, message).catch(function (err) {
+                        connection.invoke("SendMessage", roomId, message).catch(function (err) {
                             return console.error(err);
                         });
                         document.getElementById("messageInput").value = "";
@@ -139,7 +148,7 @@ document.getElementById("connectButton").addEventListener("click", function () {
                     .addEventListener('click', function (event) {
                         event.preventDefault();
                         roomName = document.getElementById("roomName").value;
-                        connection.invoke("LeaveRoom", roomName).catch(function (err) {
+                        connection.invoke("LeaveRoom", roomId).catch(function (err) {
                             return console.error(err);
                         });
                     });

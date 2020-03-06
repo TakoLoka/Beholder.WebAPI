@@ -28,20 +28,6 @@
   ],
   "invocations": [
     {
-      "methodName": "CreateRoom",
-      "description": "Creates A Room",
-      "authorization": "DMAuthorization",
-      "parameters": [],
-      "onSuccess": {
-        "target": "Caller",
-        "payload": "CREATE_ROOM"
-      },
-      "onError": {
-        "target": "Caller",
-        "payload": "CREATE_ROOM_ERROR"
-      }
-    },
-    {
       "methodName": "SendMessage",
       "description": "Sends A Message to Given Room",
       "authorization": "Authorization",
@@ -85,14 +71,6 @@
     {
       "methodName": "BAD_REQUEST",
       "data": ""
-    },
-    {
-      "methodName": "CREATE_ROOM",
-      "data": "Room Name"
-    },
-    {
-      "methodName": "CREATE_ROOM_ERROR",
-      "data": "Error Message"
     },
     {
       "methodName": "MESSAGE",

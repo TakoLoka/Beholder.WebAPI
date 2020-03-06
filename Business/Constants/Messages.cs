@@ -9,7 +9,7 @@ namespace Business.Constants
     public class Messages
     {
         #region Global Messages
-        public static string GuidError = "The Room Name is not valid.";
+        public static string GuidError = "The Room Id is not valid.";
         public static string UserNotFound = "User Not Found";
         public static string UserFound = "User Found";
         #endregion

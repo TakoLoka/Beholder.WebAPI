@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
             {
                 IEnumerable<Claim> claims = identity.Claims;
                 string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
-                var result = _roomService.DeleteRoom(userEmail, deleteRoomDto.RoomName);
+                var result = _roomService.DeleteRoom(userEmail, deleteRoomDto.RoomId);
                 if (!result.Success)
                 {
                     return BadRequest(result.Message);
@@ -69,6 +69,31 @@ namespace WebAPI.Controllers
             }
 
             return BadRequest();
+        }
+
+
+        [Route("rooms")]
+        [HttpPost]
+        [DMAuthorize]
+        public IActionResult CreateRoom(CreateRoomDto createRoomDto)
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                IEnumerable<Claim> claims = identity.Claims;
+                string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
+                var result = _roomService.CreateRoom(userEmail, createRoomDto.RoomName, createRoomDto.Description);
+                if (!result.Success)
+                {
+                    return BadRequest(result.Message);
+                }
+                else
+                {
+                    return Ok(result);
+                }
+            }
+
+                return BadRequest();
         }
     }
 }

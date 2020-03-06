@@ -53,7 +53,7 @@ namespace WebAPI.Controllers
             return this.OperateOnUser(_userService, _userService.BecomeDungeonMasterPremium, RefreshToken);
         }
 
-        [HttpGet]
+        [HttpGet("User")]
         [Authorize]
         public IActionResult GetCurrentUser()
         {
