@@ -16,5 +16,7 @@ namespace Business.Abstract
         IResult RemoveDungeonMasterPremium(User user);
         IResult RemovePlayerPremium(User user);
         IResult UpdateUser(User user);
+        IResult IsDungeonMasterPremium(User user);
+        IResult IsPlayerPremium(User user);
     }
 }

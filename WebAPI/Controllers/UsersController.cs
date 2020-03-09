@@ -9,7 +9,6 @@ using Core.Entities.Models;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Jwt;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Services.Cache;
 using WebAPI.Utilities;
@@ -51,6 +50,20 @@ namespace WebAPI.Controllers
         public IActionResult BecomePremiumDM()
         {
             return this.OperateOnUser(_userService, _userService.BecomeDungeonMasterPremium, RefreshToken);
+        }
+
+        [HttpGet("User/IsDM")]
+        [Authorize]
+        public IActionResult IsDungeonMaster()
+        {
+            return this.OperateOnUser(_userService, _userService.IsDungeonMasterPremium);
+        }
+
+        [HttpGet("User/IsPlayerPremium")]
+        [Authorize]
+        public IActionResult IsPlayerPremium()
+        {
+            return this.OperateOnUser(_userService, _userService.IsPlayerPremium);
         }
 
         [HttpGet("User")]

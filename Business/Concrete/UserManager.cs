@@ -46,7 +46,7 @@ namespace Business.Concrete
             {
                 premiumUser.OperationClaims = new List<OperationClaim>();
             }
-            else if(premiumUser.OperationClaims.FirstOrDefault(x => x.Name == OperationClaimNames.Player) != null)
+            else if (premiumUser.OperationClaims.FirstOrDefault(x => x.Name == OperationClaimNames.Player) != null)
             {
                 return new ErrorResult(Messages.UserMessages.UserAlreadyPremiumPlayer(premiumUser));
             }
@@ -70,6 +70,20 @@ namespace Business.Concrete
         public IDataResult<List<OperationClaim>> GetClaims(User user)
         {
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetOne(usr => usr.Id == user.Id).OperationClaims.ToList());
+        }
+
+        public IResult IsDungeonMasterPremium(User user)
+        {
+            if (user.OperationClaims.Find(x => x.Name == "DM") != null)
+                return new SuccessResult(Messages.UserMessages.UserIsDungeonMaster);
+            return new ErrorResult(Messages.UserMessages.UserIsNotDungeonMaster);
+        }
+
+        public IResult IsPlayerPremium(User user)
+        {
+            if (user.OperationClaims.Find(x => x.Name == "Player") != null)
+                return new SuccessResult(Messages.UserMessages.UserIsPlayerPremium);
+            return new ErrorResult(Messages.UserMessages.UserIsNotPlayerPremium);
         }
 
         public IResult RemoveDungeonMasterPremium(User user)

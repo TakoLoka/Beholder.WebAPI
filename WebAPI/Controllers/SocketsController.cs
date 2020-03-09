@@ -26,7 +26,24 @@ namespace WebAPI.Controllers
         [HttpGet]
         public IActionResult GetRooms()
         {
-            return Ok(_roomService.GetRooms());
+            var result = _roomService.GetRooms();
+            if (!result.Success)
+            {
+                return BadRequest(result.Message);
+            }
+            return Ok(result);
+        }
+
+        [Route("rooms/room")]
+        [HttpGet]
+        public IActionResult GetRoomById(string roomId)
+        {
+            var result = _roomService.GetRoomById(roomId);
+            if (!result.Success)
+            {
+                return BadRequest(result.Message);
+            }
+            return Ok(result);
         }
 
         [Route("rooms/user")]

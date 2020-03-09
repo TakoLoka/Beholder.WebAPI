@@ -32,6 +32,11 @@ namespace Business.Constants
         public class UserMessages
         {
             public static string UserUpdated = "User Updated Successfully";
+            public static string UserIsDungeonMaster = "User Is Dungeon Master";
+            public static string UserIsPlayerPremium = "User Is Player Premium";
+            public static string UserIsNotDungeonMaster = "User Is Not Dungeon Master";
+            public static string UserIsNotPlayerPremium = "User Is Not Player Premium";
+
             public static string UserCreated(User user) => user.Email + ": Created";
             public static string UserBecamePremiumDM(User user) => user.Email + ": Became Premium Dungeon Master";
             public static string UserBecamePremiumPlayer(User user) => user.Email + ": Became Premium Player";
