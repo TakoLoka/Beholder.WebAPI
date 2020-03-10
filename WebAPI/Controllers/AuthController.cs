@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstract;
-using Core.Dtos;
+using Core.Dtos.AuthDtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,7 +32,7 @@ namespace WebAPI.Controllers
             var result = _authService.CreateAccessToken(userToLogin.Data);
             if (result.Success)
             {
-                return Ok(result);
+                return Ok(result.Data);
             }
 
             return BadRequest(result.Message);
@@ -50,7 +50,7 @@ namespace WebAPI.Controllers
             var tokenResult = _authService.CreateAccessToken(userToRegister.Data);
             if (tokenResult.Success)
             {
-                return Ok(tokenResult);
+                return Ok(tokenResult.Data);
             }
 
             return BadRequest(tokenResult.Message);

@@ -8,19 +8,16 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WebAPI.Models.Documentation;
 using Microsoft.AspNetCore.Hosting;
-using WebAPI.Services.Cache;
 
 namespace WebAPI.Controllers
 {
     public class DocumentationController : Controller
     {
         private readonly IHostingEnvironment _hostEnvironment;
-        private readonly ICacheService _cacheService;
 
-        public DocumentationController(IHostingEnvironment hostEnvironment, ICacheService cacheService)
+        public DocumentationController(IHostingEnvironment hostEnvironment)
         {
             _hostEnvironment = hostEnvironment;
-            _cacheService = cacheService;
         }
         public IActionResult Index()
         {

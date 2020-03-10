@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Core.Dtos
+namespace Core.Dtos.AuthDtos
 {
     public class UserForLoginDto: IDto
     {

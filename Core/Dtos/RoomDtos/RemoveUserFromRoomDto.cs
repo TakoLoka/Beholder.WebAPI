@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Dtos
+namespace Core.Dtos.RoomDtos
 {
     public class RemoveUserFromRoomDto: IDto
     {

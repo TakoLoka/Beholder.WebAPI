@@ -1,4 +1,4 @@
-﻿using Core.Dtos;
+﻿using Core.Dtos.AuthDtos;
 using Core.Entities.Models;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Jwt;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using Business.Abstract;
-using Core.Dtos;
+using Core.Dtos.RoomDtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +31,7 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(result.Message);
             }
-            return Ok(result);
+            return Ok(result.Data);
         }
 
         [Route("rooms/room")]
@@ -43,7 +43,7 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(result.Message);
             }
-            return Ok(result);
+            return Ok(result.Data);
         }
 
         [Route("rooms/user")]
@@ -61,7 +61,7 @@ namespace WebAPI.Controllers
                 {
                     return BadRequest(result.Message);
                 }
-                return Ok(result);
+                return Ok(result.Data);
             }
 
             return BadRequest();
@@ -82,7 +82,7 @@ namespace WebAPI.Controllers
                 {
                     return BadRequest(result.Message);
                 }
-                return Ok(result);
+                return Ok(result.Message);
             }
 
             return BadRequest();
@@ -106,7 +106,7 @@ namespace WebAPI.Controllers
                 }
                 else
                 {
-                    return Ok(result);
+                    return Ok(result.Message);
                 }
             }
 

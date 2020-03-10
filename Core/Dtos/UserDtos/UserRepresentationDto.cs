@@ -4,10 +4,20 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Dtos
+namespace Core.Dtos.UserDtos
 {
     public class UserRepresentationDto: IDto
     {
+        public UserRepresentationDto(User user)
+        {
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+            Email = user.Email;
+            RegistryDate = user.RegistryDate;
+            BirthDay = user.BirthDay;
+            Characters = user.Characters;
+        }
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }

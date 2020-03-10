@@ -5,13 +5,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Business.Abstract;
+using Core.Dtos.UserDtos;
 using Core.Entities.Models;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Services.Cache;
-using WebAPI.Utilities;
 
 namespace WebAPI.Controllers
 {
@@ -49,49 +49,172 @@ namespace WebAPI.Controllers
         [Authorize]
         public IActionResult BecomePremiumDM()
         {
-            return this.OperateOnUser(_userService, _userService.BecomeDungeonMasterPremium, RefreshToken);
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                IEnumerable<Claim> claims = identity.Claims;
+                string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
+                var user = _userService.GetByMail(userEmail).Data;
+                var result = _userService.BecomeDungeonMasterPremium(user);
+                if (!result.Success)
+                {
+                    return BadRequest(result.Message);
+                }
+
+                var refreshedTokenResult = RefreshToken(user);
+
+                if (!refreshedTokenResult.Success)
+                {
+                    return BadRequest(refreshedTokenResult.Message);
+                }
+
+                return Ok(refreshedTokenResult.Data);
+            }
+
+            return BadRequest();
         }
 
-        [HttpGet("User/IsDM")]
+        [HttpGet("Premium/IsDM")]
         [Authorize]
         public IActionResult IsDungeonMaster()
         {
-            return this.OperateOnUser(_userService, _userService.IsDungeonMasterPremium);
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                IEnumerable<Claim> claims = identity.Claims;
+                string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
+                var user = _userService.GetByMail(userEmail).Data;
+                var result = _userService.IsDungeonMasterPremium(user);
+
+                return Ok(result.Success);
+            }
+
+            return BadRequest();
         }
 
-        [HttpGet("User/IsPlayerPremium")]
+        [HttpGet("Premium/IsPlayerPremium")]
         [Authorize]
         public IActionResult IsPlayerPremium()
         {
-            return this.OperateOnUser(_userService, _userService.IsPlayerPremium);
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                IEnumerable<Claim> claims = identity.Claims;
+                string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
+                var user = _userService.GetByMail(userEmail).Data;
+                var result = _userService.IsPlayerPremium(user);
+
+                return Ok(result.Success);
+            }
+
+            return BadRequest();
         }
 
         [HttpGet("User")]
         [Authorize]
         public IActionResult GetCurrentUser()
         {
-            return this.OperateOnEmail(_userService.GetByMail);
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                IEnumerable<Claim> claims = identity.Claims;
+                string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
+                var result = _userService.GetByMail(userEmail);
+                if (!result.Success)
+                {
+                    return BadRequest(result.Message);
+                }
+                return Ok(new UserRepresentationDto(result.Data));
+            }
+
+            return BadRequest();
         }
 
         [HttpPost("Premium/Player")]
         [Authorize]
         public IActionResult BecomePremiumPlayer()
         {
-            return this.OperateOnUser(_userService, _userService.BecomePlayerPremium, RefreshToken);
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                IEnumerable<Claim> claims = identity.Claims;
+                string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
+                var user = _userService.GetByMail(userEmail).Data;
+                var result = _userService.BecomePlayerPremium(user);
+                if (!result.Success)
+                {
+                    return BadRequest(result.Message);
+                }
+
+                var refreshedTokenResult = RefreshToken(user);
+
+                if (!refreshedTokenResult.Success)
+                {
+                    return BadRequest(refreshedTokenResult.Message);
+                }
+
+                return Ok(refreshedTokenResult.Data);
+            }
+
+            return BadRequest();
         }
 
         [HttpDelete("Premium/DM")]
         [Authorize]
         public IActionResult RemoveDungeonMasterPremium()
         {
-            return this.OperateOnUser(_userService, _userService.RemoveDungeonMasterPremium, RefreshToken);
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                IEnumerable<Claim> claims = identity.Claims;
+                string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
+                var user = _userService.GetByMail(userEmail).Data;
+                var result = _userService.RemoveDungeonMasterPremium(user);
+                if (!result.Success)
+                {
+                    return BadRequest(result.Message);
+                }
+
+                var refreshedTokenResult = RefreshToken(user);
+
+                if (!refreshedTokenResult.Success)
+                {
+                    return BadRequest(refreshedTokenResult.Message);
+                }
+
+                return Ok(refreshedTokenResult.Data);
+            }
+
+            return BadRequest();
         }
 
         [HttpDelete("Premium/Player")]
         [Authorize]
         public IActionResult RemovePlayerPremium()
         {
-            return this.OperateOnUser(_userService, _userService.RemovePlayerPremium, RefreshToken);
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                IEnumerable<Claim> claims = identity.Claims;
+                string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
+                var user = _userService.GetByMail(userEmail).Data;
+                var result = _userService.RemovePlayerPremium(user);
+                if (!result.Success)
+                {
+                    return BadRequest(result.Message);
+                }
+
+                var refreshedTokenResult = RefreshToken(user);
+
+                if (!refreshedTokenResult.Success)
+                {
+                    return BadRequest(refreshedTokenResult.Message);
+                }
+
+                return Ok(refreshedTokenResult.Data);
+            }
+
+            return BadRequest();
         }
         #endregion
     }

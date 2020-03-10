@@ -31,7 +31,7 @@ namespace WebAPI.Hubs
             var identity = Context.User.Identity as ClaimsIdentity;
             IEnumerable<Claim> claims = identity.Claims;
             string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
-            await Clients.Group(roomId).SendAsync("MESSAGE", $"{userEmail}: {message}");
+            await Clients.Group(roomId).SendAsync("MESSAGE", $"{message}");
         }
 
         [Authorize]

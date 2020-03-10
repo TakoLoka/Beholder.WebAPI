@@ -1,7 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Core.Constants;
-using Core.Dtos;
+using Core.Dtos.AuthDtos;
 using Core.Entities.Models;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;

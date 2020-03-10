@@ -19,7 +19,6 @@ using Microsoft.Extensions.Logging;
 using WebAPI.Hubs;
 using WebAPI.Services.Cache;
 using WebAPI.Services.Cache.Redis;
-using WebAPI.Utilities;
 
 namespace WebAPI
 {

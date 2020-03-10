@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Dtos
+namespace Core.Dtos.RoomDtos
 {
-    public class DeleteRoomDto: IDto
+    public class UserJoinRoomDto: IDto
     {
         public string RoomId { get; set; }
     }
