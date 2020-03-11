@@ -21,12 +21,12 @@ namespace DataAccess.Concrete
 
         public OperationClaim GetOperationClaimById(string id)
         {
-            return ConnectCollection().Find(x => x.Id == id).FirstOrDefault();
+            return ConnectCollection().Find(x => x.Id.Equals(id)).FirstOrDefault();
         }
 
         public OperationClaim GetOperationClaimByName(string name)
         {
-            return ConnectCollection().Find(x => x.Name == name).FirstOrDefault();
+            return ConnectCollection().Find(x => x.Name.Equals(name)).FirstOrDefault();
         }
 
         public List<OperationClaim> GetOperationClaims(Expression<Func<OperationClaim, bool>> expression = null)

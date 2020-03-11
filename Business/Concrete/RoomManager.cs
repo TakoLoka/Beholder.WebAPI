@@ -29,7 +29,7 @@ namespace Business.Concrete
                 {
                     return new ErrorResult(Messages.UserNotFound);
                 }
-                var roomToAdd = _roomDal.GetOne(room => room.RoomId == parsedRoomId);
+                var roomToAdd = _roomDal.GetOne(room => room.RoomId.Equals(parsedRoomId));
                 if (roomToAdd == null)
                 {
                     return new ErrorResult(Messages.RoomMessages.RoomDoesNotExist);
@@ -38,7 +38,7 @@ namespace Business.Concrete
                 if (roomToAdd.Users == null)
                     roomToAdd.Users = new List<User>();
 
-                if (roomToAdd.Users.Find(user => user.Email == userToAdd.Email) != null)
+                if (roomToAdd.Users.Find(user => user.Email.Equals(userToAdd.Email)) != null)
                 {
                     return new ErrorResult(Messages.RoomMessages.UserAlreadyExists);
                 }
@@ -71,8 +71,8 @@ namespace Business.Concrete
         {
             if (Guid.TryParse(roomId, out var assignedId))
             {
-                var roomToDelete = _roomDal.GetOne(room => room.RoomId == assignedId);
-                if (creatorEmail == roomToDelete.Creator.Email)
+                var roomToDelete = _roomDal.GetOne(room => room.RoomId.Equals(assignedId));
+                if (creatorEmail.Equals(roomToDelete.Creator.Email))
                 {
                     _roomDal.Delete(roomToDelete);
 
@@ -88,7 +88,7 @@ namespace Business.Concrete
         public IDataResult<Room> GetRoomById(string roomId)
         {
             var assignedId = new Guid(roomId);
-            return new SuccessDataResult<Room>(_roomDal.GetOne(room => room.RoomId == assignedId));
+            return new SuccessDataResult<Room>(_roomDal.GetOne(room => room.RoomId.Equals(assignedId)));
         }
 
         public IDataResult<List<Room>> GetRooms()
@@ -107,21 +107,21 @@ namespace Business.Concrete
             if (Guid.TryParse(roomId, out var assignedId))
             {
 
-                var removeRoom = _roomDal.GetOne(room => room.RoomId == assignedId);
+                var removeRoom = _roomDal.GetOne(room => room.RoomId.Equals(assignedId));
 
                 if (removeRoom == null)
                 {
                     return new ErrorResult(Messages.RoomMessages.RoomDoesNotExist);
                 }
 
-                var userToRemove = removeRoom.Users.Find(x => x.Email == email);
+                var userToRemove = removeRoom.Users.Find(x => x.Email.Equals(email));
 
-                if (removeRoom.Users.Find(user => user.Email == userToRemove.Email) == null)
+                if (removeRoom.Users.Find(user => user.Email.Equals(userToRemove.Email)) == null)
                 {
                     return new ErrorResult(Messages.RoomMessages.UserIsNotInThisRoom);
                 }
 
-                //if (userToRemove.Email == removeRoom.Creator.Email)
+                //if (userToRemove.Email.Equals(removeRoom.Creator.Email))
                 //{
                 //    return DeleteRoom(userToRemove.Email, removeRoom.RoomId.ToString());
                 //}
@@ -152,7 +152,7 @@ namespace Business.Concrete
 
         public IDataResult<Room> GetRoomByName(string roomName)
         {
-            return new SuccessDataResult<Room>(_roomDal.GetOne(room => room.RoomName == roomName));
+            return new SuccessDataResult<Room>(_roomDal.GetOne(room => room.RoomName.Equals(roomName)));
         }
     }
 }

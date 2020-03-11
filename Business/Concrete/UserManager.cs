@@ -24,12 +24,12 @@ namespace Business.Concrete
 
         public IResult BecomeDungeonMasterPremium(User user)
         {
-            var premiumUser = _userDal.GetOne(usr => user.Id == usr.Id);
+            var premiumUser = _userDal.GetOne(usr => user.Id.Equals(usr.Id));
             if (premiumUser.OperationClaims == null)
             {
                 user.OperationClaims = new List<OperationClaim>();
             }
-            else if (premiumUser.OperationClaims.FirstOrDefault(x => x.Name == OperationClaimNames.DungeonMaster) != null)
+            else if (premiumUser.OperationClaims.FirstOrDefault(x => x.Name.Equals(OperationClaimNames.DungeonMaster)) != null)
             {
                 return new ErrorResult(Messages.UserMessages.UserAlreadyPremiumDM(premiumUser));
             }
@@ -41,12 +41,12 @@ namespace Business.Concrete
 
         public IResult BecomePlayerPremium(User user)
         {
-            var premiumUser = _userDal.GetOne(usr => user.Id == usr.Id);
+            var premiumUser = _userDal.GetOne(usr => user.Id.Equals(usr.Id));
             if (premiumUser.OperationClaims == null)
             {
                 premiumUser.OperationClaims = new List<OperationClaim>();
             }
-            else if (premiumUser.OperationClaims.FirstOrDefault(x => x.Name == OperationClaimNames.Player) != null)
+            else if (premiumUser.OperationClaims.FirstOrDefault(x => x.Name.Equals(OperationClaimNames.Player)) != null)
             {
                 return new ErrorResult(Messages.UserMessages.UserAlreadyPremiumPlayer(premiumUser));
             }
@@ -64,36 +64,36 @@ namespace Business.Concrete
 
         public IDataResult<User> GetByMail(string email)
         {
-            return new SuccessDataResult<User>(_userDal.GetOne(user => user.Email == email));
+            return new SuccessDataResult<User>(_userDal.GetOne(user => user.Email.Equals(email)));
         }
 
         public IDataResult<List<OperationClaim>> GetClaims(User user)
         {
-            return new SuccessDataResult<List<OperationClaim>>(_userDal.GetOne(usr => usr.Id == user.Id).OperationClaims.ToList());
+            return new SuccessDataResult<List<OperationClaim>>(_userDal.GetOne(usr => usr.Id.Equals(user.Id)).OperationClaims.ToList());
         }
 
         public IResult IsDungeonMasterPremium(User user)
         {
-            if (user.OperationClaims.Find(x => x.Name == "DM") != null)
+            if (user.OperationClaims.Find(x => x.Name.Equals("DM")) != null)
                 return new SuccessResult(Messages.UserMessages.UserIsDungeonMaster);
             return new ErrorResult(Messages.UserMessages.UserIsNotDungeonMaster);
         }
 
         public IResult IsPlayerPremium(User user)
         {
-            if (user.OperationClaims.Find(x => x.Name == "Player") != null)
+            if (user.OperationClaims.Find(x => x.Name.Equals("Player")) != null)
                 return new SuccessResult(Messages.UserMessages.UserIsPlayerPremium);
             return new ErrorResult(Messages.UserMessages.UserIsNotPlayerPremium);
         }
 
         public IResult RemoveDungeonMasterPremium(User user)
         {
-            var premiumUser = _userDal.GetOne(usr => user.Id == usr.Id);
+            var premiumUser = _userDal.GetOne(usr => user.Id.Equals(usr.Id));
             if (premiumUser.OperationClaims == null)
             {
                 return new ErrorResult(Messages.UserMessages.UserNotPremiumDM(premiumUser));
             }
-            else if (premiumUser.OperationClaims.FirstOrDefault(x => x.Name == OperationClaimNames.DungeonMaster) == null)
+            else if (premiumUser.OperationClaims.FirstOrDefault(x => x.Name.Equals(OperationClaimNames.DungeonMaster)) == null)
             {
                 return new ErrorResult(Messages.UserMessages.UserNotPremiumDM(premiumUser));
             }
@@ -105,12 +105,12 @@ namespace Business.Concrete
 
         public IResult RemovePlayerPremium(User user)
         {
-            var premiumUser = _userDal.GetOne(usr => user.Id == usr.Id);
+            var premiumUser = _userDal.GetOne(usr => user.Id.Equals(usr.Id));
             if (premiumUser.OperationClaims == null)
             {
                 return new ErrorResult(Messages.UserMessages.UserNotPremiumPlayer(premiumUser));
             }
-            else if (premiumUser.OperationClaims.FirstOrDefault(x => x.Name == OperationClaimNames.Player) == null)
+            else if (premiumUser.OperationClaims.FirstOrDefault(x => x.Name.Equals(OperationClaimNames.Player)) == null)
             {
                 return new ErrorResult(Messages.UserMessages.UserNotPremiumPlayer(premiumUser));
             }
