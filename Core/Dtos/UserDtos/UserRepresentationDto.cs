@@ -17,8 +17,8 @@ namespace Core.Dtos.UserDtos
             RegistryDate = user.RegistryDate;
             BirthDay = user.BirthDay;
             Characters = user.Characters;
-            IsDM = user.OperationClaims.Find(claim => claim.Name == OperationClaimNames.DungeonMaster) != null;
-            IsPlayer = user.OperationClaims.Find(claim => claim.Name == OperationClaimNames.Player) != null;
+            IsDM = user.OperationClaims.Find(claim => claim.Name.Equals(OperationClaimNames.DungeonMaster)) != null;
+            IsPlayer = user.OperationClaims.Find(claim => claim.Name.Equals(OperationClaimNames.Player)) != null;
         }
 
         public string FirstName { get; set; }
