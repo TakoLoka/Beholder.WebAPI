@@ -18,7 +18,7 @@ document.getElementById("loginButton").addEventListener("click", function () {
     xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
-            var token = JSON.parse(xhr.responseText) && JSON.parse(xhr.responseText).data.token;
+            var token = JSON.parse(xhr.responseText) && JSON.parse(xhr.responseText).token;
             localStorage.setItem("access_token", token);
             alert("Logged In.");
         } else {
@@ -46,7 +46,7 @@ document
         xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('access_token'));
         xhr.onload = function () {
             if (xhr.readyState == 4 && xhr.status == "200") {
-                var roomName = JSON.parse(xhr.responseText) && JSON.parse(xhr.responseText).message;
+                var roomName = JSON.parse(xhr.responseText) && JSON.parse(xhr.responseText);
                 appendMessage(roomName);
             } else {
                 var err = JSON.parse(xhr.responseText);
