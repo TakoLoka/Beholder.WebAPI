@@ -11,11 +11,10 @@ namespace Core.Entities.Models
         [BsonElement("RoomId")]
         public Guid RoomId { get; set; }
         [BsonElement("RoomName")]
-        [BsonRequired]
         public string RoomName { get; set; }
         [BsonElement("Description")]
         public string Description { get; set; }
-        [BsonRequired]
+        [BsonElement("Creator")]
         public User Creator { get; set; }
         [BsonElement("Users")]
         public List<User> Users { get; set; }

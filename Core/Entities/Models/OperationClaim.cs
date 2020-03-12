@@ -9,9 +9,7 @@ namespace Core.Entities.Models
 {
     public class OperationClaim: AbstractMongoEntity
     {
-        [Required]
         [BsonElement("Name")]
-        [BsonRequired]
         public string Name { get; set; }
     }
 }

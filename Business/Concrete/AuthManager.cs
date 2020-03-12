@@ -1,11 +1,14 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
 using Core.Constants;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Dtos.AuthDtos;
 using Core.Entities.Models;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.Jwt;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -53,30 +56,11 @@ namespace Business.Concrete
 
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto)
         {
+            FluentValidationTool.Validate(new UserForRegisterValidator(), userForRegisterDto);
 
             if (UserExists(userForRegisterDto.Email).Success)
             {
                 return new ErrorDataResult<User>(Messages.AuthMessages.UserAlreadyExists);
-            }
-
-            if (!(userForRegisterDto.Email.Contains("@")))
-            {
-                return new ErrorDataResult<User>(Messages.AuthMessages.InvalidEmail);
-            }
-
-            if (userForRegisterDto.BirthDay.Year > DateTime.Now.AddYears(-CheckValues.AgeBarrier).Year)
-            {
-                return new ErrorDataResult<User>(Messages.AuthMessages.UserMustBeOlder);
-            }
-
-            if(userForRegisterDto.Password.Length < CheckValues.PasswordMinLength || userForRegisterDto.Password.Length > CheckValues.PasswordMaxLength)
-            {
-                return new ErrorDataResult<User>(Messages.AuthMessages.PasswordLengthError);
-            }
-
-            if (!userForRegisterDto.Password.Equals(userForRegisterDto.ConfirmPassword))
-            {
-                return new ErrorDataResult<User>(Messages.AuthMessages.PasswordsDoNotMatch);
             }
 
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
