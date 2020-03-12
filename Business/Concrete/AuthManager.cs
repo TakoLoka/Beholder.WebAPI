@@ -1,14 +1,13 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation.UserValidation;
-using Core.Constants;
+using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Dtos.AuthDtos;
 using Core.Entities.Models;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.Jwt;
-using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -36,11 +35,9 @@ namespace Business.Concrete
 
             return new SuccessDataResult<AccessToken>(_tokenHelper.CreateToken(user), Messages.AuthMessages.AccessTokenCreated);
         }
-
+        [ValidationAspect(typeof(UserForLoginValidator), Priority = 1)]
         public IDataResult<User> Login(UserForLoginDto userForLogin)
         {
-            FluentValidationTool.Validate(new UserForRegisterValidator(), userForLogin);
-
             if (!UserExists(userForLogin.Email).Success)
             {
                 return new ErrorDataResult<User>(Messages.UserNotFound);
@@ -56,9 +53,9 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(userToCheck.Data, Messages.AuthMessages.LoginSuccessful);
         }
 
+        [ValidationAspect(typeof(UserForRegisterValidator), Priority = 1)]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto)
         {
-            FluentValidationTool.Validate(new UserForRegisterValidator(), userForRegisterDto);
 
             if (UserExists(userForRegisterDto.Email).Success)
             {
