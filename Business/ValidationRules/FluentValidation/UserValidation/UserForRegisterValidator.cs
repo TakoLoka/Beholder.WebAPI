@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Business.ValidationRules.FluentValidation
+namespace Business.ValidationRules.FluentValidation.UserValidation
 {
     public class UserForRegisterValidator: AbstractValidator<UserForRegisterDto>
     {

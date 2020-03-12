@@ -1,6 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constants;
-using Business.ValidationRules.FluentValidation;
+using Business.ValidationRules.FluentValidation.UserValidation;
 using Core.Constants;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Dtos.AuthDtos;
@@ -39,6 +39,8 @@ namespace Business.Concrete
 
         public IDataResult<User> Login(UserForLoginDto userForLogin)
         {
+            FluentValidationTool.Validate(new UserForRegisterValidator(), userForLogin);
+
             if (!UserExists(userForLogin.Email).Success)
             {
                 return new ErrorDataResult<User>(Messages.UserNotFound);

@@ -55,11 +55,17 @@ namespace Business.Concrete
         public IResult CreateRoom(string creatorEmail, string roomName, string description)
         {
             var assignedId = Guid.NewGuid();
-            var creator = _userService.GetByMail(creatorEmail).Data;
+            var userWithMail = _userService.GetByMail(creatorEmail);
+
+            if (!userWithMail.Success)
+            {
+                return new ErrorResult(Messages.UserNotFound);
+            }
+
             _roomDal.Create(new Room
             {
                 RoomId = assignedId,
-                Creator = creator,
+                Creator = userWithMail.Data,
                 RoomName = roomName,
                 Description = description
             });
@@ -120,11 +126,6 @@ namespace Business.Concrete
                 {
                     return new ErrorResult(Messages.RoomMessages.UserIsNotInThisRoom);
                 }
-
-                //if (userToRemove.Email.Equals(removeRoom.Creator.Email))
-                //{
-                //    return DeleteRoom(userToRemove.Email, removeRoom.RoomId.ToString());
-                //}
 
                 removeRoom.Users.Remove(userToRemove);
                 _roomDal.Update(removeRoom.Id.ToString(), removeRoom);
