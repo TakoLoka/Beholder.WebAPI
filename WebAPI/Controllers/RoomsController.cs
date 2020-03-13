@@ -31,7 +31,13 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(result.Message);
             }
-            return Ok(result.Data);
+
+            List<RoomRepresentationDto> allRooms = new List<RoomRepresentationDto>();
+            foreach (var room in result.Data)
+            {
+                allRooms.Add(new RoomRepresentationDto(room));
+            }
+            return Ok(allRooms);
         }
 
         [Route("room")]
@@ -43,7 +49,7 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(result.Message);
             }
-            return Ok(result.Data);
+            return Ok(new RoomRepresentationDto(result.Data));
         }
 
         [Route("user")]
@@ -61,7 +67,12 @@ namespace WebAPI.Controllers
                 {
                     return BadRequest(result.Message);
                 }
-                return Ok(result.Data);
+                List<RoomRepresentationDto> roomsWithUser = new List<RoomRepresentationDto>();
+                foreach (var room in result.Data)
+                {
+                    roomsWithUser.Add(new RoomRepresentationDto(room));
+                }
+                return Ok(roomsWithUser);
             }
 
             return BadRequest();

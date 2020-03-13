@@ -8,17 +8,23 @@ namespace Core.Dtos.RoomDtos
 {
     public class RoomRepresentationDto
     {
-        public RoomRepresentationDto(Guid roomId, string roomName, User creator, string description)
+        public RoomRepresentationDto(Room room)
         {
-            RoomId = roomId;
-            RoomName = roomName;
-            Creator = new UserRepresentationDto(creator);
-            Description = description;
+            RoomId = room.RoomId;
+            RoomName = room.RoomName;
+            Creator = new UserRepresentationDto(room.Creator);
+            Description = room.Description;
+            Users = new List<UserRepresentationDto>();
+            foreach (var user in room.Users)
+            {
+                Users.Add(new UserRepresentationDto(user));
+            }
         }
 
         public Guid RoomId { get; set; }
         public string RoomName { get; set; }
         public UserRepresentationDto Creator { get; set; }
         public string Description { get; set; }
+        public List<UserRepresentationDto> Users { get; set; }
     }
 }
