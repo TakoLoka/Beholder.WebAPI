@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Attributes;
+using Core.Extensions;
 
 namespace WebAPI.Controllers
 {
@@ -32,12 +33,7 @@ namespace WebAPI.Controllers
                 return BadRequest(result.Message);
             }
 
-            List<RoomRepresentationDto> allRooms = new List<RoomRepresentationDto>();
-            foreach (var room in result.Data)
-            {
-                allRooms.Add(new RoomRepresentationDto(room));
-            }
-            return Ok(allRooms);
+            return Ok(result.Data.GetRepresentationList());
         }
 
         [Route("room")]
@@ -67,12 +63,8 @@ namespace WebAPI.Controllers
                 {
                     return BadRequest(result.Message);
                 }
-                List<RoomRepresentationDto> roomsWithUser = new List<RoomRepresentationDto>();
-                foreach (var room in result.Data)
-                {
-                    roomsWithUser.Add(new RoomRepresentationDto(room));
-                }
-                return Ok(roomsWithUser);
+
+                return Ok(result.Data.GetRepresentationList());
             }
 
             return BadRequest();
