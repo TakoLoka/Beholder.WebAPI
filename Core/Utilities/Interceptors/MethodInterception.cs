@@ -34,7 +34,7 @@ namespace Core.Utilities.Interceptors
                 {
                     isSuccess = false;
                     OnException(invocation);
-                    throw;
+                    throw e;
                 }
                 finally
                 {

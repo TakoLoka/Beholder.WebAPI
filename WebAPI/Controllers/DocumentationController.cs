@@ -13,9 +13,9 @@ namespace WebAPI.Controllers
 {
     public class DocumentationController : Controller
     {
-        private readonly IHostingEnvironment _hostEnvironment;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public DocumentationController(IHostingEnvironment hostEnvironment)
+        public DocumentationController(IWebHostEnvironment hostEnvironment)
         {
             _hostEnvironment = hostEnvironment;
         }
