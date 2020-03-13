@@ -7,6 +7,7 @@ namespace Core.Dtos.RoomDtos
 {
     public class DeleteRoomDto: IDto
     {
+        public string UserEmail { get; set; }
         public string RoomId { get; set; }
     }
 }

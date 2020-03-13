@@ -11,6 +11,7 @@ namespace Business.ValidationRules.FluentValidation.RoomValidation
         public CreateRoomValidation()
         {
             RuleFor(room => room.RoomName).NotEmpty();
+            RuleFor(room => room.UserEmail).NotEmpty().EmailAddress();
         }
     }
 }

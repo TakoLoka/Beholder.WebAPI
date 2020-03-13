@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Core.Abstract;
+using Core.Dtos.RoomDtos;
 using Core.Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -42,7 +43,7 @@ namespace WebAPI.Hubs
             {
                 IEnumerable<Claim> claims = identity.Claims;
                 string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
-                var result = _roomService.AddUserToRoom(userEmail, roomId);
+                var result = _roomService.AddUserToRoom(new AddUserToRoomDto { UserEmail = userEmail, RoomId = roomId });
                 if (!result.Success)
                 {
                     await Clients.Caller.SendAsync("USER_CONNECTED_ROOM_ERROR", result.Message);
@@ -66,7 +67,7 @@ namespace WebAPI.Hubs
             {
                 IEnumerable<Claim> claims = identity.Claims;
                 string userEmail = claims.First(x => x.Type == ClaimTypes.Email).Value;
-                var result = _roomService.RemoveUserFromRoom(userEmail, roomId);
+                var result = _roomService.RemoveUserFromRoom(new RemoveUserFromRoomDto { UserEmail = userEmail, RoomId = roomId });
                 if (!result.Success)
                 {
                     await Clients.Caller.SendAsync("USER_DISCONNECTED_ROOM_ERROR", result.Message);
