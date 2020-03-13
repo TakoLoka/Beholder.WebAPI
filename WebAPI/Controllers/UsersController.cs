@@ -110,7 +110,7 @@ namespace WebAPI.Controllers
             return BadRequest();
         }
 
-        [HttpGet("User")]
+        [HttpGet("CurrentUser")]
         [Authorize]
         public IActionResult GetCurrentUser()
         {
